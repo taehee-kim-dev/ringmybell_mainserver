@@ -1,0 +1,4 @@
+# Add database configuration yaml file
+spring:
+  profiles:
+    include: database
