@@ -1,5 +1,6 @@
 package com.team555.inu.ringmybell_mainserver.server.networking.android;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 // 안드로이드를 위한 웹소켓 서버 Thread Class
+@AllArgsConstructor
 @Slf4j
 @Component
 public class ServerForAndroid {
@@ -18,10 +20,6 @@ public class ServerForAndroid {
 
     // ListentingToAndroid Thread 참조변수
     private ListeningToAndroid listeningToAndroid;
-
-    public ServerForAndroid(ListeningToAndroid listeningToAndroid) {
-        this.listeningToAndroid = listeningToAndroid;
-    }
 
     @Async
     public void run(){

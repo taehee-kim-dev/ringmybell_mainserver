@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+
+<!-- namespace는 꼭 풀패키지 네임으로 적어줘야 함 -->
+<mapper namespace="com.team555.inu.ringmybell_mainserver.server.dao.MySqlDao">
+
+    <select id="selectBusStopsListOf780_1" parameterType="String" resultType="BusStop">
+        select*from bus_780_1_stops order by stop_no asc
+    </select>
+
+</mapper>
