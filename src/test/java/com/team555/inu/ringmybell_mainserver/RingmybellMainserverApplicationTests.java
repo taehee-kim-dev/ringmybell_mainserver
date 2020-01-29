@@ -8,10 +8,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-class RingmybellMainserverApplicationTests {
+public class RingmybellMainserverApplicationTests {
 
     @Test
-    void test() {
+    public void test() {
     }
 
 }
