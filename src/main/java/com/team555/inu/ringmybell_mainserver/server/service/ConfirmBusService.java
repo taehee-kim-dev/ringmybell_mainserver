@@ -2,7 +2,7 @@ package com.team555.inu.ringmybell_mainserver.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.team555.inu.ringmybell_mainserver.server.dao.RingMyBellMapper;
+import com.team555.inu.ringmybell_mainserver.server.dao.SearchBusStopsListDao;
 import com.team555.inu.ringmybell_mainserver.server.networking.android.SendOnceToAndroid;
 import com.team555.inu.ringmybell_mainserver.server.sockets.AndroidSockets;
 import com.team555.inu.ringmybell_mainserver.server.vo.Android;
@@ -20,15 +20,15 @@ public class ConfirmBusService {
 
     // JSON 데이터를 처리할 ObjectMapper객체를 참조할 참조변수
     private final ObjectMapper objectMapper;
-    private final RingMyBellMapper ringMyBellMapper;
+    private final SearchBusStopsListDao searchBusStopsListDao;
     private final SendOnceToAndroid sendOnceToAndroid;
     private final AndroidSockets androidSockets;
 
-    public ConfirmBusService(RingMyBellMapper ringMyBellMapper,
+    public ConfirmBusService(SearchBusStopsListDao searchBusStopsListDao,
                              SendOnceToAndroid sendOnceToAndroid,
                              AndroidSockets androidSockets) {
+        this.searchBusStopsListDao = searchBusStopsListDao;
         this.sendOnceToAndroid = sendOnceToAndroid;
-        this.ringMyBellMapper = ringMyBellMapper;
         this.androidSockets = androidSockets;
         objectMapper = new ObjectMapper();
     }
@@ -43,15 +43,7 @@ public class ConfirmBusService {
         // 데이터베이스에서 android객체의 routeNum으로 노선정보를 검색하여 List<BusStop>형태로 결과를 받아냄.
 
         String routeNum = android.getRouteNum();
-        List<BusStop> listOfBusStops = null;
-
-        if(routeNum.equals("780-1")){
-            try {
-                listOfBusStops = ringMyBellMapper.selectBusStopsListOf780_1();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        List<BusStop> listOfBusStops = searchBusStopsListDao.run(routeNum);
 
         // 결과 HashMap 제작
         resultHashMap1.put("busRoute", listOfBusStops);
@@ -76,8 +68,8 @@ public class ConfirmBusService {
         HashMap<String, BusLocation> resultHashMap2 = new HashMap<>();
 
         BusLocation busLocation = new BusLocation();
-        busLocation.setRecentNotNullStop("testRecentNotNullStop");
-        busLocation.setCurrentStop("38-378_test");
+        busLocation.setRecentNotNullStop("test-RecentNotNullStop");
+        busLocation.setCurrentStop("test-38-378");
 
         // 결과 HashMap 제작
         resultHashMap2.put("busLocation", busLocation);
