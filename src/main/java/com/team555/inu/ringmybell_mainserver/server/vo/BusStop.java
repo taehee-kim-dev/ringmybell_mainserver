@@ -9,7 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class BusStop {
+    // 인덱스 번호(예:1)
     private Integer stop_no;
+    // 정류장 고유번호(예:"38-034")
     private String stop_identifier;
+    // 정류장 이름(예:"인천대학교자연과학대학")
     private String stop_name;
 }
