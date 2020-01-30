@@ -2,7 +2,7 @@ package com.team555.inu.ringmybell_mainserver.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.team555.inu.ringmybell_mainserver.server.dao.MySqlDao;
+import com.team555.inu.ringmybell_mainserver.server.dao.RingMyBellMapper;
 import com.team555.inu.ringmybell_mainserver.server.networking.android.SendOnceToAndroid;
 import com.team555.inu.ringmybell_mainserver.server.sockets.AndroidSockets;
 import com.team555.inu.ringmybell_mainserver.server.vo.Android;
@@ -20,15 +20,15 @@ public class ConfirmBusService {
 
     // JSON 데이터를 처리할 ObjectMapper객체를 참조할 참조변수
     private final ObjectMapper objectMapper;
-    private final MySqlDao mySqlDao;
+    private final RingMyBellMapper ringMyBellMapper;
     private final SendOnceToAndroid sendOnceToAndroid;
     private final AndroidSockets androidSockets;
 
-    public ConfirmBusService(MySqlDao mySqlDao,
+    public ConfirmBusService(RingMyBellMapper ringMyBellMapper,
                              SendOnceToAndroid sendOnceToAndroid,
                              AndroidSockets androidSockets) {
         this.sendOnceToAndroid = sendOnceToAndroid;
-        this.mySqlDao = mySqlDao;
+        this.ringMyBellMapper = ringMyBellMapper;
         this.androidSockets = androidSockets;
         objectMapper = new ObjectMapper();
     }
@@ -47,7 +47,7 @@ public class ConfirmBusService {
 
         if(routeNum.equals("780-1")){
             try {
-                listOfBusStops = mySqlDao.selectBusStopsListOf780_1();
+                listOfBusStops = ringMyBellMapper.selectBusStopsListOf780_1();
             } catch (Exception e) {
                 e.printStackTrace();
             }

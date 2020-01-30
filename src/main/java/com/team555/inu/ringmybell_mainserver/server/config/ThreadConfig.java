@@ -14,7 +14,7 @@ public class ThreadConfig {
         ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
         threadPoolTaskExecutor.setCorePoolSize(10);
         threadPoolTaskExecutor.setMaxPoolSize(10);
-        threadPoolTaskExecutor.setThreadNamePrefix("socket_task_executor_thread_pool");
+        threadPoolTaskExecutor.setThreadNamePrefix("socket_thread");
         threadPoolTaskExecutor.initialize();
         return threadPoolTaskExecutor;
     }

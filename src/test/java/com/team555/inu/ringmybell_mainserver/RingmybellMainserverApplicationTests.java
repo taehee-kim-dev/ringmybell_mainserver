@@ -1,7 +1,7 @@
 package com.team555.inu.ringmybell_mainserver;
 
 
-import com.team555.inu.ringmybell_mainserver.server.dao.MySqlDao;
+import com.team555.inu.ringmybell_mainserver.server.dao.RingMyBellMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +13,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class RingmybellMainserverApplicationTests {
 
     @Autowired
-    private MySqlDao mySqlDao;
+    private RingMyBellMapper ringMyBellMapper;
 
     @Test
     public void test() {
         try {
-            System.out.println(mySqlDao.selectBusStopsListOf780_1());
+            System.out.println(ringMyBellMapper.selectBusStopsListOf780_1());
         } catch (Exception e) {
             e.printStackTrace();
         }

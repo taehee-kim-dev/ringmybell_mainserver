@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 @Repository
-public interface MySqlDao {
+public interface RingMyBellMapper {
     // 780-1번 버스의 정류장 정보를 데이터베이스에서 검색하여 BusStop 객체 List로 반환
     List<BusStop> selectBusStopsListOf780_1() throws Exception;
 }
