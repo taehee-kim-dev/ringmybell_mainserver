@@ -1,6 +1,7 @@
 package com.team555.inu.ringmybell_mainserver.server.networking.android;
 
 import com.team555.inu.ringmybell_mainserver.server.control.DataAnalyzeController;
+import com.team555.inu.ringmybell_mainserver.server.sockets.AndroidSockets;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -16,7 +17,8 @@ import java.net.Socket;
 @Component
 public class ListeningToAndroid {
 
-    private DataAnalyzeController dataAnalyzeController;
+    private final DataAnalyzeController dataAnalyzeController;
+    private final AndroidSockets androidSockets;
 
     @Async
     public void run(Socket connectedSocketWithAndroid){
@@ -43,9 +45,13 @@ public class ListeningToAndroid {
                 // JSONDataStr 값이 null이 됨
                 if(JSONDataStr == null){
                     log.info("ListeningToAndroid : 안드로이드 클라이언트 측에서 소켓 닫음");
-                    log.info("ListeningToAndroid Thread 종료");
+
+                    // 중앙 ArrayList에서 연결이 끊긴 socket에 대한 StoreAndroid객체 삭제
+                    androidSockets.deleteStoredAndroid(connectedSocketWithAndroid);
+
                     // 안드로이드에 클라이언트에 연결된 소켓 객체 닫음
                     connectedSocketWithAndroid.close();
+
                     break;
                 }
                 log.info("안드로이드 클라이언트로부터 받은 데이터 : "+JSONDataStr);
