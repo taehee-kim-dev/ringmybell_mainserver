@@ -1,27 +1,23 @@
 package com.team555.inu.ringmybell_mainserver.server.dao;
 
-import com.team555.inu.ringmybell_mainserver.server.vo.BusStop;
+import com.team555.inu.ringmybell_mainserver.server.vo.Android;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Repository
-public class SearchBusStopsListDao {
+public class AddReservationDao {
 
     private final RingMyBellMapper ringMyBellMapper;
 
-    public List<BusStop> run(String routeNum){
-        List<BusStop> result = null;
+    public int run(Android android){
+        int result = -100;
 
-        if(routeNum.equals("780-1")){
             try {
-                result = ringMyBellMapper.selectBusStopsListOf780_1();
+                result = ringMyBellMapper.addReservation(android);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
 
         return result;
     }

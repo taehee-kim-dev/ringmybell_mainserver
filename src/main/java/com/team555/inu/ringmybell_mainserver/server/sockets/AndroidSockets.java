@@ -1,5 +1,6 @@
 package com.team555.inu.ringmybell_mainserver.server.sockets;
 
+import com.team555.inu.ringmybell_mainserver.server.vo.Android;
 import com.team555.inu.ringmybell_mainserver.server.vo.StoredAndroid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -30,6 +31,19 @@ public class AndroidSockets {
             if(storedAndroid.getSocket().equals(socket)){
                 listOfStoredAndroid.remove(storedAndroid);
                 log.info("ArrayList에서 StoredAndroid 삭제 완료");
+                break;
+            }
+        }
+        showAllAndroidSockets();
+    }
+
+    public void updateStoredAndroid(Android android){
+        log.info("StoredAndroid의 stopToBook 업데이트");
+
+        for(StoredAndroid storedAndroid : listOfStoredAndroid){
+            if(storedAndroid.getIdentifier().equals(android.getIdentifier())){
+                storedAndroid.setStopToBook(android.getStopToBook());
+                log.info("StoredAndroid의 stopToBook 업데이트 완료");
                 break;
             }
         }

@@ -1,6 +1,7 @@
 package com.team555.inu.ringmybell_mainserver.server.control;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team555.inu.ringmybell_mainserver.server.service.AddReservationService;
 import com.team555.inu.ringmybell_mainserver.server.service.ConfirmBusService;
 import com.team555.inu.ringmybell_mainserver.server.vo.Android;
 import lombok.extern.slf4j.Slf4j;
@@ -16,11 +17,14 @@ import java.util.*;
 public class DataAnalyzeController {
 
     // JSON 데이터를 처리할 ObjectMapper객체를 참조할 참조변수
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
-    private ConfirmBusService confirmBusService;
+    private final ConfirmBusService confirmBusService;
+    private final AddReservationService addReservationService;
 
-    public DataAnalyzeController(ConfirmBusService confirmBusService) {
+    public DataAnalyzeController(ConfirmBusService confirmBusService,
+                                 AddReservationService addReservationService) {
+        this.addReservationService = addReservationService;
         this.objectMapper = new ObjectMapper();
         this.confirmBusService = confirmBusService;
     }
@@ -57,34 +61,20 @@ public class DataAnalyzeController {
                 // 안드로이드 클라이언트에서 현재 탑승 버스 확정
                 log.info("confirmBus 요청 도착");
 
-                // JSON 데이터에서 Android객체 꺼냄
-                Android android = objectMapper.convertValue(HashMapData.get(key), Android.class);
-
                 // confirmBusService로 Android객체, socket 넘김.
-                confirmBusService.run(android, socket);
+                confirmBusService.run(objectMapper.convertValue(HashMapData.get(key), Android.class), socket);
 
                 break;
-//            case "addReservation":
-//                // 하차예약 처리
-//                // database에 예약정보를 저장하고
-//                // 안드로이드에게 탑승 버스의 현재위치 실시간 전송
-//                // 하차 정류장에 도착하면 예약정보 삭제
-//
-//                System.out.println("addReservation 요청 도착");
-//
-//                // AddReservation로 데이터베이스에 예약정보 저장
-//                try {
-//                    reservationDao.addReservation(objectMapper.convertValue(hashMapData.get(key), Reservation.class));
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//                System.out.println("addReservation 처리 완료");
-//
-//                break;
+            case "addReservation":
+                // 하차예약 처리
+                log.info("addReservation 요청 도착");
+
+                addReservationService.run(objectMapper.convertValue(HashMapData.get(key), Android.class));
+
+                break;
 //            case "updateReservation":
 //                // 예약 업데이트 처리
-//                System.out.println("updateReservation 요청 도착");
+//                log.info("updateReservation 요청 도착");
 //
 //                // UpdateReservation로 데이터베이스에 예약정보 업데이트
 //                try {
@@ -93,13 +83,13 @@ public class DataAnalyzeController {
 //                    e.printStackTrace();
 //                }
 //
-//                System.out.println("updateReservation 처리 완료");
+//                log.info("updateReservation 처리 완료");
 //
 //
 //                break;
 //            case "deleteReservation":
 //                // 예약 삭제 처리
-//                System.out.println("deleteReservation 요청 도착");
+//                log.info("deleteReservation 요청 도착");
 //                // deleteReservation 요청에서
 //                // HashMap의 Obejct는 String(androidClientIdentifier)이다.
 //                // DeleteReservation실행
@@ -111,11 +101,11 @@ public class DataAnalyzeController {
 //                    e.printStackTrace();
 //                }
 //
-//                System.out.println("deleteReservation 처리 완료");
+//                log.info("deleteReservation 처리 완료");
 //
 //                break;
 //            case "ringImmediately":
-//                System.out.println("ringImmediately요청 도착");
+//                log.info("ringImmediately요청 도착");
 //                // 안드로이드 클라이언트에서 즉시 벨 작동 요청
 //
 //                // 데이터 형태 : {"ringImmediately", Reservation객체}
@@ -144,13 +134,13 @@ public class DataAnalyzeController {
 //                }
 //
 //
-//                System.out.println("ringImmediatley 실행 완료");
+//                log.info("ringImmediatley 실행 완료");
 //
 //                break;
 //            case "requestBusRoute":
 //                // 사전 예약시 버스 노선 출력을 위한 버스 노선 요청
 //                // 요청 데이터 형태 : {"requestBusRoute","780-1번"};
-//                System.out.println("requestBusRoute 요청 도착");
+//                log.info("requestBusRoute 요청 도착");
 //                // JSON 데이터에서 노선 번호 꺼냄
 //                String routeNum = objectMapper.convertValue(hashMapData.get(key), String.class);
 //
@@ -189,7 +179,7 @@ public class DataAnalyzeController {
 //                // 데이터 형태 : {"busGPSInform:{"버스차량번호":"인천11가2222",routeNum:"780-1번",lat:37.398375,lon:126.672892}}
 //                // 실수는 double형
 //                // 데이터 형태 : {"busGPSInform:BusGPSInform객체}
-//                System.out.println("busGPSInform 정보 도착");
+//                log.info("busGPSInform 정보 도착");
 //
 //                // BusGPSInform 객체만 꺼내서 전달
 //                receiveBusGPSService.updateBusGPS(

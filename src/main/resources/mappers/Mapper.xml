@@ -5,7 +5,26 @@
 <mapper namespace="com.team555.inu.ringmybell_mainserver.server.dao.RingMyBellMapper">
 
     <select id="selectBusStopsListOf780_1" parameterType="String" resultType="BusStop">
-        select*from bus_780_1_stops order by stop_no asc
+        select*from
+        bus_780_1_stops
+        order by stop_no asc
     </select>
+
+    <update id="addReservation" parameterType="Android">
+        insert
+        into
+        reservations
+        (
+        android_client_identifier,
+        bus_identifier,
+        reservation_to_stop
+        )
+        values
+        (
+        #{identifier},
+        #{busNumPlate},
+        #{stopToBook}
+        )
+    </update>
 
 </mapper>
