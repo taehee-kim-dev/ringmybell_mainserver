@@ -4,4 +4,4 @@
 
 build
 
-database.properties
+application-database.yml

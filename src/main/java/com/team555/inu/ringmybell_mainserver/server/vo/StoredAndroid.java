@@ -3,6 +3,8 @@ package com.team555.inu.ringmybell_mainserver.server.vo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -12,6 +14,7 @@ import java.net.Socket;
 // 안드로이드 객체
 @Setter
 @Getter
+@Slf4j
 @NoArgsConstructor
 public class StoredAndroid extends Android {
 
@@ -21,7 +24,7 @@ public class StoredAndroid extends Android {
     private BufferedWriter bufferedWriter;
 
     public StoredAndroid(Android android, Socket socket) {
-        super(android.getIdentifier(), android.getBusNumPlate(), android.getRouteNum(), android.getStopToBook());
+        super(android.getIdentifier(), android.getBusNumPlate(), android.getRouteNum(), "Initial_value");
 
         this.socket = socket;
 
@@ -30,5 +33,7 @@ public class StoredAndroid extends Android {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        log.info("StoredAndroid객체 생성 완료");
     }
 }

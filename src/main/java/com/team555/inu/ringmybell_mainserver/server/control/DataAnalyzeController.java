@@ -1,11 +1,8 @@
 package com.team555.inu.ringmybell_mainserver.server.control;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.team555.inu.ringmybell_mainserver.server.networking.android.SendOnceToAndroid;
 import com.team555.inu.ringmybell_mainserver.server.service.ConfirmBusService;
 import com.team555.inu.ringmybell_mainserver.server.vo.Android;
-import com.team555.inu.ringmybell_mainserver.server.vo.BusStop;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
@@ -21,14 +18,11 @@ public class DataAnalyzeController {
     // JSON 데이터를 처리할 ObjectMapper객체를 참조할 참조변수
     private ObjectMapper objectMapper;
 
-    private SendOnceToAndroid sendOnceToAndroid;
-
     private ConfirmBusService confirmBusService;
 
-    public DataAnalyzeController(SendOnceToAndroid sendOnceToAndroid, ConfirmBusService confirmBusService) {
-        this.sendOnceToAndroid = sendOnceToAndroid;
-        this.confirmBusService = confirmBusService;
+    public DataAnalyzeController(ConfirmBusService confirmBusService) {
         this.objectMapper = new ObjectMapper();
+        this.confirmBusService = confirmBusService;
     }
 
     // 안드로이드 클라이언트로부터 받은 JSON String 데이터를 분석하는 함수
@@ -66,26 +60,9 @@ public class DataAnalyzeController {
                 // JSON 데이터에서 Android객체 꺼냄
                 Android android = objectMapper.convertValue(HashMapData.get(key), Android.class);
 
-                // 해당 차량 노선의 노선정류장 BusStop객체 List를 HashMap에 담아 SendOnceToAndroid로 보냄
-                // {"busRoute", List<BusStop객체>}
-                // 위와 같이 담을 HashMap 객체를 생성하고,
-                HashMap<String, List<BusStop>> resultHashMap = new HashMap<>();
+                // confirmBusService로 Android객체, socket 넘김.
+                confirmBusService.run(android, socket);
 
-                List<BusStop> resultList = confirmBusService.run(android.getRouteNum());
-
-                // 결과 HashMap 제작
-                resultHashMap.put("busRoute", resultList);
-
-                String json = null;
-                // JSON 문자열로 변환
-                try {
-                    json = objectMapper.writeValueAsString(resultHashMap);
-                    System.out.println(json);
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-
-                sendOnceToAndroid.run(socket, json);
                 break;
 //            case "addReservation":
 //                // 하차예약 처리
