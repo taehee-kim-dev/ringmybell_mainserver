@@ -27,10 +27,8 @@ public class SendOnceToAndroid {
 
             log.info("안드로이드 클라이언트로 JSON String data 전송");
 
-            log.info("======================안드로이드에 데이터 전송======================");
-
             // 데이터 확인
-            log.info("안드로이드에 전송할 데이터 : " + JSONDataStr);
+            log.info("안드로이드에 전송하는 데이터 : " + JSONDataStr);
 
             // JSON형태의 문자열 데이터를
             // 버퍼 Writer을 통해 안드로이드 클라이언트로 보낸다.
@@ -47,7 +45,6 @@ public class SendOnceToAndroid {
             //남아있는 데이터를 모두 출력시킴
             bufferedWriter.flush();
 
-            log.info("======================안드로이드 클라이언트로 데이터 전송 완료======================");
         }catch(Exception e){
             log.error("SendOnceToAndroid Thread의 run()에서 에러발생");
             e.printStackTrace();
