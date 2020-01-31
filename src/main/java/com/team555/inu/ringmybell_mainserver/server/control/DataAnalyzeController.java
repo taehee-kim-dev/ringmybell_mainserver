@@ -3,6 +3,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team555.inu.ringmybell_mainserver.server.service.AddReservationService;
 import com.team555.inu.ringmybell_mainserver.server.service.ConfirmBusService;
+import com.team555.inu.ringmybell_mainserver.server.service.UpdateReservationService;
 import com.team555.inu.ringmybell_mainserver.server.vo.Android;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -21,10 +22,13 @@ public class DataAnalyzeController {
 
     private final ConfirmBusService confirmBusService;
     private final AddReservationService addReservationService;
+    private final UpdateReservationService updateReservationService;
 
     public DataAnalyzeController(ConfirmBusService confirmBusService,
-                                 AddReservationService addReservationService) {
+                                 AddReservationService addReservationService,
+                                 UpdateReservationService updateReservationService) {
         this.addReservationService = addReservationService;
+        this.updateReservationService = updateReservationService;
         this.objectMapper = new ObjectMapper();
         this.confirmBusService = confirmBusService;
     }
@@ -72,21 +76,13 @@ public class DataAnalyzeController {
                 addReservationService.run(objectMapper.convertValue(HashMapData.get(key), Android.class));
 
                 break;
-//            case "updateReservation":
-//                // 예약 업데이트 처리
-//                log.info("updateReservation 요청 도착");
-//
-//                // UpdateReservation로 데이터베이스에 예약정보 업데이트
-//                try {
-//                    reservationDao.updateReservation(objectMapper.convertValue(hashMapData.get(key), Reservation.class));
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//                log.info("updateReservation 처리 완료");
-//
-//
-//                break;
+            case "updateReservation":
+                // 예약 업데이트 처리
+                log.info("updateReservation 요청 도착");
+
+                updateReservationService.run(objectMapper.convertValue(HashMapData.get(key), Android.class));
+
+                break;
 //            case "deleteReservation":
 //                // 예약 삭제 처리
 //                log.info("deleteReservation 요청 도착");

@@ -14,4 +14,6 @@ public interface RingMyBellMapper {
     List<BusStop> selectBusStopsListOf780_1() throws Exception;
     // 예약 추가
     int addReservation(Android android) throws Exception;
+    // 예약 업데이트
+    int updateReservation(Android android) throws Exception;
 }

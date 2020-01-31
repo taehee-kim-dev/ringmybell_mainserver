@@ -10,7 +10,7 @@
         order by stop_no asc
     </select>
 
-    <update id="addReservation" parameterType="Android">
+    <insert id="addReservation" parameterType="Android">
         insert
         into
         reservations
@@ -25,6 +25,15 @@
         #{busNumPlate},
         #{stopToBook}
         )
+    </insert>
+
+    <update id="updateReservation" parameterType="Android">
+        update
+        reservations
+        set
+        reservation_to_stop=#{stopToBook}
+        where
+        android_client_identifier=#{identifier}
     </update>
 
 </mapper>
