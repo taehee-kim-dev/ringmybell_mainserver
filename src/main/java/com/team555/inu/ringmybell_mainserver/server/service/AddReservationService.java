@@ -1,6 +1,5 @@
 package com.team555.inu.ringmybell_mainserver.server.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team555.inu.ringmybell_mainserver.server.dao.AddReservationDao;
 import com.team555.inu.ringmybell_mainserver.server.sockets.AndroidSockets;
 import com.team555.inu.ringmybell_mainserver.server.vo.Android;

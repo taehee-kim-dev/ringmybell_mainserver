@@ -1,6 +1,7 @@
 package com.team555.inu.ringmybell_mainserver.server;
 
 import com.team555.inu.ringmybell_mainserver.server.networking.android.ServerForAndroid;
+import com.team555.inu.ringmybell_mainserver.server.networking.rasberrypi.ServerForRasberryPi;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -16,6 +17,7 @@ import java.nio.charset.Charset;
 public class Application implements ApplicationRunner {
 
     private ServerForAndroid serverForAndroid;
+    private ServerForRasberryPi serverForRasberryPi;
 
     @Override
     public void run(ApplicationArguments args) throws Exception{
@@ -40,5 +42,6 @@ public class Application implements ApplicationRunner {
         log.info("Application 시작!!");
 
         serverForAndroid.run();
+        serverForRasberryPi.run();
     }
 }

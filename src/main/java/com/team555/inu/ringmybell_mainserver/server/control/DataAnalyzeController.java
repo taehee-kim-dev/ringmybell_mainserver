@@ -3,6 +3,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team555.inu.ringmybell_mainserver.server.service.*;
 import com.team555.inu.ringmybell_mainserver.server.vo.Android;
+import com.team555.inu.ringmybell_mainserver.server.vo.RasberryPi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
@@ -25,12 +26,16 @@ public class DataAnalyzeController {
     private final SearchBusRoutesService searchBusRoutesService;
     private final RequestBusRouteService requestBusRouteService;
 
+    private final RegisterBusService registerBusService;
+
     public DataAnalyzeController(ConfirmBusService confirmBusService,
                                  AddReservationService addReservationService,
                                  UpdateReservationService updateReservationService,
                                  DeleteReservationService deleteReservationService,
                                  SearchBusRoutesService searchBusRoutesService,
-                                 RequestBusRouteService requestBusRouteService) {
+                                 RequestBusRouteService requestBusRouteService,
+                                 RegisterBusService registerBusService) {
+        this.registerBusService = registerBusService;
         this.objectMapper = new ObjectMapper();
         this.confirmBusService = confirmBusService;
         this.addReservationService = addReservationService;
@@ -147,18 +152,14 @@ public class DataAnalyzeController {
                 requestBusRouteService.run(objectMapper.convertValue(hashMapData.get(key), String.class), socket);
 
                 break;
-//            case "rasberryPiBusInform":
-//                // 라즈베리파이에서 소켓 접속 직후,
-//                // 해당 라즈베리파이가 설치되어있는 버스 정보를 전송함
-//                // 서버는 이 정보를
-//                // {"버스차량번호":BufferedWriter}로 저장했다가, 버스 벨 작동시 사용해야 함
-//                // {"rasberryPiBusInform":Bus객체} 형태의 JSON String 데이터
-//                // 이 버스객체는 차량번호, 노선번호를 갖고있음
-//                // 버스 객체를 소켓 객체와 함께 전달
-//
-//                currentBuses.registerNewBus(socket, objectMapper.convertValue(hashMapData.get(key), String.class));
-//
-//                break;
+            case "registerBus":
+                // 라즈베리파이에서 소켓 접속 직후, 버스 등록 요청
+                log.info("registerBus 요청 도착");
+
+                // 중앙 저장용 arrayList에 StoredRasberryPi 저장
+                registerBusService.run(objectMapper.convertValue(hashMapData.get(key), RasberryPi.class), socket);
+
+                break;
 //            case "busGPSInform":
 //                // 계속 실시간으로 모든 라즈베리파이로부터 버스 GPS정보 수신
 //                // 데이터 형태 : {"busGPSInform:{"버스차량번호":"인천11가2222",routeNum:"780-1번",lat:37.398375,lon:126.672892}}

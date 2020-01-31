@@ -1,5 +1,6 @@
 package com.team555.inu.ringmybell_mainserver.server.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,20 +11,25 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-// 안드로이드 저장용 객체
 @Setter
 @Getter
 @Slf4j
 @NoArgsConstructor
-public class StoredAndroid extends Android {
+public class StoredRasberryPi extends RasberryPi{
 
     // 연결된 Socket 객체
     private Socket socket;
     // 연결된 소켓의 BufferedWriter
     private BufferedWriter bufferedWriter;
+    // 현재 정류장
+    private String currentStop;
+    // 이전 정류장
+    private String beforeStop;
+    // 가장 최근 null이 아닌 정류장
+    private String recentNotNullStop;
 
-    public StoredAndroid(Android android, Socket socket) {
-        super(android.getIdentifier(), android.getBusNumPlate(), android.getRouteNum(), "Initial_value");
+    public StoredRasberryPi(RasberryPi rasberryPi, Socket socket) {
+        super(rasberryPi.getBusNumPlate(), rasberryPi.getRouteNum(), rasberryPi.getLat(), rasberryPi.getLon());
 
         this.socket = socket;
 
@@ -33,6 +39,10 @@ public class StoredAndroid extends Android {
             e.printStackTrace();
         }
 
-        log.info("StoredAndroid객체 생성 완료");
+        this.currentStop = null;
+        this.beforeStop = null;
+        this.recentNotNullStop = null;
+
+        log.info("StoredRasberryPi객체 생성 완료");
     }
 }

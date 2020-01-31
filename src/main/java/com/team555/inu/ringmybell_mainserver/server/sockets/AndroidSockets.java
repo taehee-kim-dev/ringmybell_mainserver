@@ -56,7 +56,9 @@ public class AndroidSockets {
             log.info("identifier : " + sa.getIdentifier());
             log.info("busNumPlate : " + sa.getBusNumPlate());
             log.info("routeNum : " + sa.getRouteNum());
-            log.info("stopToBook : " + sa.getStopToBook() + "\n");
+            log.info("stopToBook : " + sa.getStopToBook());
+            log.info("socket : " + sa.getSocket());
+            log.info("bufferedWriter : " + sa.getBufferedWriter() + "\n");
         }
     }
 }
