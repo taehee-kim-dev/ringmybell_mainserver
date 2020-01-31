@@ -3,6 +3,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team555.inu.ringmybell_mainserver.server.service.AddReservationService;
 import com.team555.inu.ringmybell_mainserver.server.service.ConfirmBusService;
+import com.team555.inu.ringmybell_mainserver.server.service.DeleteReservationService;
 import com.team555.inu.ringmybell_mainserver.server.service.UpdateReservationService;
 import com.team555.inu.ringmybell_mainserver.server.vo.Android;
 import lombok.extern.slf4j.Slf4j;
@@ -23,12 +24,15 @@ public class DataAnalyzeController {
     private final ConfirmBusService confirmBusService;
     private final AddReservationService addReservationService;
     private final UpdateReservationService updateReservationService;
+    private final DeleteReservationService deleteReservationService;
 
     public DataAnalyzeController(ConfirmBusService confirmBusService,
                                  AddReservationService addReservationService,
-                                 UpdateReservationService updateReservationService) {
+                                 UpdateReservationService updateReservationService,
+                                 DeleteReservationService deleteReservationService) {
         this.addReservationService = addReservationService;
         this.updateReservationService = updateReservationService;
+        this.deleteReservationService = deleteReservationService;
         this.objectMapper = new ObjectMapper();
         this.confirmBusService = confirmBusService;
     }
@@ -83,23 +87,13 @@ public class DataAnalyzeController {
                 updateReservationService.run(objectMapper.convertValue(HashMapData.get(key), Android.class));
 
                 break;
-//            case "deleteReservation":
-//                // 예약 삭제 처리
-//                log.info("deleteReservation 요청 도착");
-//                // deleteReservation 요청에서
-//                // HashMap의 Obejct는 String(androidClientIdentifier)이다.
-//                // DeleteReservation실행
-//
-//                // deleteReservation으로 데이터베이스에서 정보 삭제
-//                try {
-//                    reservationDao.deleteReservation(objectMapper.convertValue(hashMapData.get(key), String.class));
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//                log.info("deleteReservation 처리 완료");
-//
-//                break;
+            case "deleteReservation":
+                // 예약 삭제 처리
+                log.info("deleteReservation 요청 도착");
+
+                deleteReservationService.run(objectMapper.convertValue(HashMapData.get(key), Android.class));
+
+                break;
 //            case "ringImmediately":
 //                log.info("ringImmediately요청 도착");
 //                // 안드로이드 클라이언트에서 즉시 벨 작동 요청

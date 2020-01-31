@@ -36,4 +36,12 @@
         android_client_identifier=#{identifier}
     </update>
 
+    <delete id="deleteReservation" parameterType="Android">
+        delete
+        from
+        reservations
+        where
+        android_client_identifier=#{identifier}
+    </delete>
+
 </mapper>

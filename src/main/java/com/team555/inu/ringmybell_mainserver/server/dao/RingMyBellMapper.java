@@ -16,4 +16,6 @@ public interface RingMyBellMapper {
     int addReservation(Android android) throws Exception;
     // 예약 업데이트
     int updateReservation(Android android) throws Exception;
+    // 예약 삭제
+    int deleteReservation(Android android) throws Exception;
 }

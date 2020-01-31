@@ -1,5 +1,6 @@
 package com.team555.inu.ringmybell_mainserver.server.service;
 
+import com.team555.inu.ringmybell_mainserver.server.dao.DeleteReservationDao;
 import com.team555.inu.ringmybell_mainserver.server.dao.UpdateReservationDao;
 import com.team555.inu.ringmybell_mainserver.server.sockets.AndroidSockets;
 import com.team555.inu.ringmybell_mainserver.server.vo.Android;
@@ -10,18 +11,20 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class UpdateReservationService {
-    private final UpdateReservationDao updateReservationDao;
+public class DeleteReservationService {
+    private final DeleteReservationDao deleteReservationDao;
     private final AndroidSockets androidSockets;
 
     public void run(Android android){
-        int result = updateReservationDao.run(android);
+        int result = deleteReservationDao.run(android);
 
         if(result == 1){
-            log.info("updateReservation 성공!!");
-            androidSockets.updateStoredAndroid(android);
+            log.info("deleteReservation 성공!!");
+            Android tmpAndroid = android;
+            tmpAndroid.setStopToBook("none");
+            androidSockets.updateStoredAndroid(tmpAndroid);
         }else{
-            log.error("updateReservation 실패");
+            log.error("deleteReservation 실패");
             log.error("result : " + result);
         }
 
