@@ -2,6 +2,7 @@ package com.team555.inu.ringmybell_mainserver.server.dao;
 
 import com.team555.inu.ringmybell_mainserver.server.vo.Android;
 import com.team555.inu.ringmybell_mainserver.server.vo.BusStop;
+import com.team555.inu.ringmybell_mainserver.server.vo.SearchedBusRoute;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +19,6 @@ public interface RingMyBellMapper {
     int updateReservation(Android android) throws Exception;
     // 예약 삭제
     int deleteReservation(Android android) throws Exception;
+    // 버스노선 검색
+    List<SearchedBusRoute> selectSearchedBusRoutesList(String searchKeyword) throws Exception;
 }

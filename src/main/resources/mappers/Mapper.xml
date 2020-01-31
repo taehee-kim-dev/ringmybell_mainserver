@@ -10,6 +10,10 @@
         order by stop_no asc
     </select>
 
+    <select id="selectSearchedBusRoutesList" parameterType="String" resultType="SearchedBusRoute">
+        select*from bus_routes where bus_route like CONCAT('%', #{searchKeyword}, '%') order by bus_route asc
+    </select>
+
     <insert id="addReservation" parameterType="Android">
         insert
         into

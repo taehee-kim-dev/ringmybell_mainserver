@@ -15,7 +15,7 @@ public class Android {
     private String identifier;
     // 버스 차량 번호 (예:"인천74사1071")
     private String busNumPlate;
-    // 버스 노선번호(예:"780-1번")
+    // 버스 노선번호(예:"780-1")
     private String routeNum;
     // 예약할 정류장 고유번호(예:"38-034")
     private String stopToBook;

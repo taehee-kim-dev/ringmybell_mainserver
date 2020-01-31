@@ -2,7 +2,7 @@ package com.team555.inu.ringmybell_mainserver.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.team555.inu.ringmybell_mainserver.server.dao.SearchBusStopsListDao;
+import com.team555.inu.ringmybell_mainserver.server.dao.RequestBusStopsListDao;
 import com.team555.inu.ringmybell_mainserver.server.networking.android.SendOnceToAndroid;
 import com.team555.inu.ringmybell_mainserver.server.sockets.AndroidSockets;
 import com.team555.inu.ringmybell_mainserver.server.vo.Android;
@@ -20,14 +20,14 @@ public class ConfirmBusService {
 
     // JSON 데이터를 처리할 ObjectMapper객체를 참조할 참조변수
     private final ObjectMapper objectMapper;
-    private final SearchBusStopsListDao searchBusStopsListDao;
+    private final RequestBusStopsListDao requestBusStopsListDao;
     private final SendOnceToAndroid sendOnceToAndroid;
     private final AndroidSockets androidSockets;
 
-    public ConfirmBusService(SearchBusStopsListDao searchBusStopsListDao,
+    public ConfirmBusService(RequestBusStopsListDao requestBusStopsListDao,
                              SendOnceToAndroid sendOnceToAndroid,
                              AndroidSockets androidSockets) {
-        this.searchBusStopsListDao = searchBusStopsListDao;
+        this.requestBusStopsListDao = requestBusStopsListDao;
         this.sendOnceToAndroid = sendOnceToAndroid;
         this.androidSockets = androidSockets;
         objectMapper = new ObjectMapper();
@@ -43,7 +43,7 @@ public class ConfirmBusService {
         // 데이터베이스에서 android객체의 routeNum으로 노선정보를 검색하여 List<BusStop>형태로 결과를 받아냄.
 
         String routeNum = android.getRouteNum();
-        List<BusStop> listOfBusStops = searchBusStopsListDao.run(routeNum);
+        List<BusStop> listOfBusStops = requestBusStopsListDao.run(routeNum);
 
         // 결과 HashMap 제작
         resultHashMap1.put("busRoute", listOfBusStops);

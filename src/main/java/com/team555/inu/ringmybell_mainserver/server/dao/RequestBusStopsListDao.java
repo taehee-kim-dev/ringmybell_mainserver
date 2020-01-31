@@ -8,7 +8,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Repository
-public class SearchBusStopsListDao {
+public class RequestBusStopsListDao {
 
     private final RingMyBellMapper ringMyBellMapper;
 

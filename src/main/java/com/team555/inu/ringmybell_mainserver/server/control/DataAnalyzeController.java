@@ -22,20 +22,22 @@ public class DataAnalyzeController {
     private final AddReservationService addReservationService;
     private final UpdateReservationService updateReservationService;
     private final DeleteReservationService deleteReservationService;
-
+    private final SearchBusRoutesService searchBusRoutesService;
     private final RequestBusRouteService requestBusRouteService;
 
     public DataAnalyzeController(ConfirmBusService confirmBusService,
                                  AddReservationService addReservationService,
                                  UpdateReservationService updateReservationService,
                                  DeleteReservationService deleteReservationService,
+                                 SearchBusRoutesService searchBusRoutesService,
                                  RequestBusRouteService requestBusRouteService) {
+        this.objectMapper = new ObjectMapper();
+        this.confirmBusService = confirmBusService;
         this.addReservationService = addReservationService;
         this.updateReservationService = updateReservationService;
         this.deleteReservationService = deleteReservationService;
+        this.searchBusRoutesService = searchBusRoutesService;
         this.requestBusRouteService = requestBusRouteService;
-        this.objectMapper = new ObjectMapper();
-        this.confirmBusService = confirmBusService;
     }
 
     // 안드로이드 클라이언트로부터 받은 JSON String 데이터를 분석하는 함수
@@ -128,6 +130,14 @@ public class DataAnalyzeController {
 //                log.info("ringImmediatley 실행 완료");
 //
 //                break;
+            case "searchBusRoute":
+                // 사전예약시 버스 노선 검색 요청
+                log.info("searchBusRoute 요청 도착");
+
+                // searchBusRouteService로 Android객체, socket 넘김.
+                searchBusRoutesService.run(objectMapper.convertValue(hashMapData.get(key), String.class), socket);
+
+                break;
             case "requestBusRoute":
                 // 사전 예약시 버스 노선 출력을 위한 버스 노선 요청
                 // 요청 데이터 형태 : {"requestBusRoute","780-1"};
