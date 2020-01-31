@@ -52,7 +52,6 @@ public class ConfirmBusService {
         // JSON 문자열로 변환
         try {
             json1 = objectMapper.writeValueAsString(resultHashMap1);
-            System.out.println(json1);
         } catch (
                 JsonProcessingException e) {
             e.printStackTrace();
@@ -78,7 +77,6 @@ public class ConfirmBusService {
         // JSON 문자열로 변환
         try {
             json2 = objectMapper.writeValueAsString(resultHashMap2);
-            System.out.println(json2);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

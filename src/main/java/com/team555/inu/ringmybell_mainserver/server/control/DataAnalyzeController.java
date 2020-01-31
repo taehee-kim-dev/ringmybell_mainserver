@@ -1,10 +1,7 @@
 package com.team555.inu.ringmybell_mainserver.server.control;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.team555.inu.ringmybell_mainserver.server.service.AddReservationService;
-import com.team555.inu.ringmybell_mainserver.server.service.ConfirmBusService;
-import com.team555.inu.ringmybell_mainserver.server.service.DeleteReservationService;
-import com.team555.inu.ringmybell_mainserver.server.service.UpdateReservationService;
+import com.team555.inu.ringmybell_mainserver.server.service.*;
 import com.team555.inu.ringmybell_mainserver.server.vo.Android;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -26,13 +23,17 @@ public class DataAnalyzeController {
     private final UpdateReservationService updateReservationService;
     private final DeleteReservationService deleteReservationService;
 
+    private final RequestBusRouteService requestBusRouteService;
+
     public DataAnalyzeController(ConfirmBusService confirmBusService,
                                  AddReservationService addReservationService,
                                  UpdateReservationService updateReservationService,
-                                 DeleteReservationService deleteReservationService) {
+                                 DeleteReservationService deleteReservationService,
+                                 RequestBusRouteService requestBusRouteService) {
         this.addReservationService = addReservationService;
         this.updateReservationService = updateReservationService;
         this.deleteReservationService = deleteReservationService;
+        this.requestBusRouteService = requestBusRouteService;
         this.objectMapper = new ObjectMapper();
         this.confirmBusService = confirmBusService;
     }
@@ -42,16 +43,16 @@ public class DataAnalyzeController {
 
         log.info("DataAnalyzeController에 데이터 전달됨 : " + JSONDataStr);
 
-        HashMap<String, Object> HashMapData = null;
+        HashMap<String, Object> hashMapData = null;
 
         // JSON String Data를 HashMap객체로 변환
         try {
-            HashMapData = objectMapper.readValue(JSONDataStr, new TypeReference<HashMap<String, Object>>(){});
+            hashMapData = objectMapper.readValue(JSONDataStr, new TypeReference<HashMap<String, Object>>(){});
         } catch (IOException e) {
             e.printStackTrace();
         }
         // HashMap의 key값들을 담을 Set 객체 생성
-        Set set = HashMapData.keySet();
+        Set set = hashMapData.keySet();
         // Set의 key값들을 탐색할 Iterator 객체 생성
         Iterator iterator = set.iterator();
 
@@ -70,28 +71,28 @@ public class DataAnalyzeController {
                 log.info("confirmBus 요청 도착");
 
                 // confirmBusService로 Android객체, socket 넘김.
-                confirmBusService.run(objectMapper.convertValue(HashMapData.get(key), Android.class), socket);
+                confirmBusService.run(objectMapper.convertValue(hashMapData.get(key), Android.class), socket);
 
                 break;
             case "addReservation":
                 // 하차예약 처리
                 log.info("addReservation 요청 도착");
 
-                addReservationService.run(objectMapper.convertValue(HashMapData.get(key), Android.class));
+                addReservationService.run(objectMapper.convertValue(hashMapData.get(key), Android.class));
 
                 break;
             case "updateReservation":
                 // 예약 업데이트 처리
                 log.info("updateReservation 요청 도착");
 
-                updateReservationService.run(objectMapper.convertValue(HashMapData.get(key), Android.class));
+                updateReservationService.run(objectMapper.convertValue(hashMapData.get(key), Android.class));
 
                 break;
             case "deleteReservation":
                 // 예약 삭제 처리
                 log.info("deleteReservation 요청 도착");
 
-                deleteReservationService.run(objectMapper.convertValue(HashMapData.get(key), Android.class));
+                deleteReservationService.run(objectMapper.convertValue(hashMapData.get(key), Android.class));
 
                 break;
 //            case "ringImmediately":
@@ -127,31 +128,15 @@ public class DataAnalyzeController {
 //                log.info("ringImmediatley 실행 완료");
 //
 //                break;
-//            case "requestBusRoute":
-//                // 사전 예약시 버스 노선 출력을 위한 버스 노선 요청
-//                // 요청 데이터 형태 : {"requestBusRoute","780-1번"};
-//                log.info("requestBusRoute 요청 도착");
-//                // JSON 데이터에서 노선 번호 꺼냄
-//                String routeNum = objectMapper.convertValue(hashMapData.get(key), String.class);
-//
-//                // 해당 차량 노선의 노선정류장 ArrayList를 HashMap에 담아 SendingToAndroid2로 보냄
-//                // {"respondBusRoute", ArrayList<ArrayList<"정류장이름", "정류장고유번호">>}
-//                // 위와 같이 담을 HashMap 객체를 생성하고,
-//                HashMap<String, ArrayList<ArrayList<String>>> busRoute2 = new HashMap<>();
-//                // routeNum의  버스 노선번호로 서버 시작시 데이터베이스에서 업로드된
-//                // 노선별 정류장 이중리스트를 찾아 "busRoute"라는 key로 넣는다
-//                busRoute2.put("respondBusRoute", BusStops.listOfStopsByRoute.get(routeNum));
-//
-//                String json2 = null;
-//                // JSON 문자열로 변환
-//                try {
-//                    json2 = objectMapper.writeValueAsString(busRoute2);
-//                } catch (JsonProcessingException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                new Thread(new SendingToAndroid2(socket, json2)).start();
-//                break;
+            case "requestBusRoute":
+                // 사전 예약시 버스 노선 출력을 위한 버스 노선 요청
+                // 요청 데이터 형태 : {"requestBusRoute","780-1"};
+                log.info("requestBusRoute 요청 도착");
+
+                // requestBusRouteService로 Android객체, socket 넘김.
+                requestBusRouteService.run(objectMapper.convertValue(hashMapData.get(key), String.class), socket);
+
+                break;
 //            case "rasberryPiBusInform":
 //                // 라즈베리파이에서 소켓 접속 직후,
 //                // 해당 라즈베리파이가 설치되어있는 버스 정보를 전송함
