@@ -160,20 +160,20 @@ public class DataAnalyzeController {
                 registerBusService.run(objectMapper.convertValue(hashMapData.get(key), RasberryPi.class), socket);
 
                 break;
-//            case "busGPSInform":
-//                // 계속 실시간으로 모든 라즈베리파이로부터 버스 GPS정보 수신
-//                // 데이터 형태 : {"busGPSInform:{"버스차량번호":"인천11가2222",routeNum:"780-1번",lat:37.398375,lon:126.672892}}
-//                // 실수는 double형
-//                // 데이터 형태 : {"busGPSInform:BusGPSInform객체}
-//                log.info("busGPSInform 정보 도착");
-//
+            case "busGPSInform":
+                // 계속 실시간으로 모든 라즈베리파이로부터 버스 GPS정보 수신
+                // 데이터 형태 : {"busGPSInform:{"버스차량번호":"인천11가2222",routeNum:"780-1번",lat:37.398375,lon:126.672892}}
+                // 실수는 double형
+                // 데이터 형태 : {"busGPSInform:BusGPSInform객체}
+                log.info("busGPSInform 정보 도착");
+
 //                // BusGPSInform 객체만 꺼내서 전달
 //                receiveBusGPSService.updateBusGPS(
 //                        objectMapper.convertValue(hashMapData.get(key), BusGPSInform.class),
 //                        currentBuses,
 //                        busStopLocationsDao,
 //                        deleteReservations);
-//                break;
+                break;
             default:
                 log.error("DataAnalyzeController의 switch(key)에서 key값이 default로 넘어감");
         }
