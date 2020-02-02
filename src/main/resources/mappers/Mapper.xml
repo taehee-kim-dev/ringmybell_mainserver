@@ -46,6 +46,8 @@
         reservations
         where
         android_client_identifier=#{identifier}
+        and
+        bus_identifier=#{busNumPlate}
     </delete>
     
     <delete id="arriveAtTheBusStop" parameterType="BusArriveInform">

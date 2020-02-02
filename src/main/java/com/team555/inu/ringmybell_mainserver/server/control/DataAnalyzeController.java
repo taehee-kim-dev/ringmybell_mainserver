@@ -23,6 +23,7 @@ public class DataAnalyzeController {
     private final AddReservationService addReservationService;
     private final UpdateReservationService updateReservationService;
     private final DeleteReservationService deleteReservationService;
+    private final RingImmediatelyService ringImmediatelyService;
     private final SearchBusRoutesService searchBusRoutesService;
     private final RequestBusRouteService requestBusRouteService;
 
@@ -33,10 +34,12 @@ public class DataAnalyzeController {
                                  AddReservationService addReservationService,
                                  UpdateReservationService updateReservationService,
                                  DeleteReservationService deleteReservationService,
+                                 RingImmediatelyService ringImmediatelyService,
                                  SearchBusRoutesService searchBusRoutesService,
                                  RequestBusRouteService requestBusRouteService,
                                  RegisterBusService registerBusService,
                                  BusGPSInformService busGPSInformService) {
+        this.ringImmediatelyService = ringImmediatelyService;
         this.registerBusService = registerBusService;
         this.busGPSInformService = busGPSInformService;
         this.objectMapper = new ObjectMapper();
@@ -103,39 +106,14 @@ public class DataAnalyzeController {
                 deleteReservationService.run(objectMapper.convertValue(hashMapData.get(key), Android.class));
 
                 break;
-//            case "ringImmediately":
-//                log.info("ringImmediately요청 도착");
-//                // 안드로이드 클라이언트에서 즉시 벨 작동 요청
-//
-//                // 데이터 형태 : {"ringImmediately", Reservation객체}
-//
-//                // Reservation 객체의 하차예약 정류장은 의미없음
-//                // 안드로이드 식별자와 탑승 버스 차량번호만 필요
-//
-//                // 라즈베리파이에게 버스벨 울림 신호 보냄
-//
-//                // 벨 작동을 요청한 사람이 만약
-//                // 데이터베이스에 존재하는 기존 예약자라면,
-//                // database에서 예약정보 삭제
-//                // 있든 없든 그냥 무조건 삭제하면 됨
-//                // 없으면 삭제처리 없이 진행됨
-//
-//                Reservation reservation = objectMapper.convertValue(hashMapData.get(key), Reservation.class);
-//
-//                // 즉시 버스 벨 작동
-//                currentBuses.ringBellImmediately(reservation.getAndroidClientIdentifier(), reservation.getBusNumPlate());
-//
-//                // 즉시 벨 작동 요청자의 예약정보 삭제
-//                try {
-//                    deleteReservationImmediately.deleteReservation(reservation.getAndroidClientIdentifier());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//
-//                log.info("ringImmediatley 실행 완료");
-//
-//                break;
+            case "ringImmediately":
+                log.info("ringImmediately요청 도착");
+                // 안드로이드 클라이언트에서 즉시 벨 작동 요청
+
+                // 데이터 형태 : {"ringImmediately", Android객체}
+                ringImmediatelyService.run(objectMapper.convertValue(hashMapData.get(key), Android.class));
+
+                break;
             case "searchBusRoute":
                 // 사전예약시 버스 노선 검색 요청
                 log.info("searchBusRoute 요청 도착");
