@@ -5,6 +5,7 @@ import com.team555.inu.ringmybell_mainserver.server.vo.StoredRasberryPi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -16,6 +17,17 @@ public class RasberryPiSockets {
 
     public RasberryPiSockets() {
         listOfStoredRasberryPi = new ArrayList<>();
+    }
+
+    public BufferedWriter getBufferedWriter(RasberryPi rasberryPi){
+        BufferedWriter result = null;
+        for(StoredRasberryPi storedRasberryPi : listOfStoredRasberryPi){
+            if(storedRasberryPi.getBusNumPlate().equals(rasberryPi.getBusNumPlate())){
+                result = storedRasberryPi.getBufferedWriter();
+                break;
+            }
+        }
+        return result;
     }
 
     public void addStoredRasberryPi(StoredRasberryPi storedRasberryPi){

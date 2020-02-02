@@ -3,6 +3,7 @@ package com.team555.inu.ringmybell_mainserver.server.service;
 import com.team555.inu.ringmybell_mainserver.server.dao.BusArrivedDao;
 import com.team555.inu.ringmybell_mainserver.server.dao.CheckBusLocationDao;
 import com.team555.inu.ringmybell_mainserver.server.networking.android.SendRepeatedlyToAndroid;
+import com.team555.inu.ringmybell_mainserver.server.networking.rasberrypi.RingBellToRasberryPi;
 import com.team555.inu.ringmybell_mainserver.server.sockets.AndroidSockets;
 import com.team555.inu.ringmybell_mainserver.server.sockets.RasberryPiSockets;
 import com.team555.inu.ringmybell_mainserver.server.vo.BusArriveInform;
@@ -23,6 +24,7 @@ public class BusGPSInformService {
     private final BusArrivedDao busArrivedDao;
     private final AndroidSockets androidSockets;
     private final SendRepeatedlyToAndroid sendRepeatedlyToAndroid;
+    private final RingBellToRasberryPi ringBellToRasberryPi;
 
     public void run(RasberryPi rasberryPi){
 
@@ -57,7 +59,9 @@ public class BusGPSInformService {
                 log.info("deletedReservations : " + deletedReservations);
 
                 // deletedReservations값이 1이상이면 현재 버스의 벨 울림
-
+                if(deletedReservations > 0){
+                    ringBellToRasberryPi.run(rasberryPiSockets.getBufferedWriter(rasberryPi));
+                }
             }
 
             log.info("안드로이드에게 BusLocation 객체 전송");
