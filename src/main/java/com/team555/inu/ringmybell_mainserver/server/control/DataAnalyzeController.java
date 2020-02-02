@@ -27,6 +27,7 @@ public class DataAnalyzeController {
     private final RequestBusRouteService requestBusRouteService;
 
     private final RegisterBusService registerBusService;
+    private final BusGPSInformService busGPSInformService;
 
     public DataAnalyzeController(ConfirmBusService confirmBusService,
                                  AddReservationService addReservationService,
@@ -34,8 +35,10 @@ public class DataAnalyzeController {
                                  DeleteReservationService deleteReservationService,
                                  SearchBusRoutesService searchBusRoutesService,
                                  RequestBusRouteService requestBusRouteService,
-                                 RegisterBusService registerBusService) {
+                                 RegisterBusService registerBusService,
+                                 BusGPSInformService busGPSInformService) {
         this.registerBusService = registerBusService;
+        this.busGPSInformService = busGPSInformService;
         this.objectMapper = new ObjectMapper();
         this.confirmBusService = confirmBusService;
         this.addReservationService = addReservationService;
@@ -47,8 +50,6 @@ public class DataAnalyzeController {
 
     // 안드로이드 클라이언트로부터 받은 JSON String 데이터를 분석하는 함수
     public void Analyze(String JSONDataStr, Socket socket){
-
-        log.info("DataAnalyzeController에 데이터 전달됨 : " + JSONDataStr);
 
         HashMap<String, Object> hashMapData = null;
 
@@ -162,17 +163,13 @@ public class DataAnalyzeController {
                 break;
             case "busGPSInform":
                 // 계속 실시간으로 모든 라즈베리파이로부터 버스 GPS정보 수신
-                // 데이터 형태 : {"busGPSInform:{"버스차량번호":"인천11가2222",routeNum:"780-1번",lat:37.398375,lon:126.672892}}
+                // 데이터 형태 : {"busGPSInform:{busNumPlate:"인천11가2222",routeNum:"780-1번",lat:37.398375,lon:126.672892}}
                 // 실수는 double형
-                // 데이터 형태 : {"busGPSInform:BusGPSInform객체}
+                // 데이터 형태 : {"busGPSInform:RasberryPi객체}
                 log.info("busGPSInform 정보 도착");
 
-//                // BusGPSInform 객체만 꺼내서 전달
-//                receiveBusGPSService.updateBusGPS(
-//                        objectMapper.convertValue(hashMapData.get(key), BusGPSInform.class),
-//                        currentBuses,
-//                        busStopLocationsDao,
-//                        deleteReservations);
+                busGPSInformService.run(objectMapper.convertValue(hashMapData.get(key), RasberryPi.class));
+
                 break;
             default:
                 log.error("DataAnalyzeController의 switch(key)에서 key값이 default로 넘어감");

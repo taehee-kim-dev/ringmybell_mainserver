@@ -48,4 +48,14 @@
         android_client_identifier=#{identifier}
     </delete>
 
+    <select id="checkBusLocationOf780_1" parameterType="RasberryPi" resultType="String">
+        select stop_identifier,
+        (6371*acos(cos(radians(#{lat}))*cos(radians(latitude))*cos(radians(longitude)
+        -radians(#{lon}))+sin(radians(#{lat}))*sin(radians(latitude)))) AS distance
+        FROM bus_780_1_stop_locations
+        HAVING distance <![CDATA[<= 0.05]]>
+        ORDER BY distance
+        LIMIT 0,1
+    </select>
+
 </mapper>
