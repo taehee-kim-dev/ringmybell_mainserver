@@ -1,5 +1,6 @@
 package com.team555.inu.ringmybell_mainserver.server.sockets;
 
+import com.team555.inu.ringmybell_mainserver.server.vo.Android;
 import com.team555.inu.ringmybell_mainserver.server.vo.RasberryPi;
 import com.team555.inu.ringmybell_mainserver.server.vo.StoredRasberryPi;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +68,7 @@ public class RasberryPiSockets {
         showAllRasberryPiSockets();
     }
 
-    public String getRecentStop(RasberryPi rasberryPi){
+    public String getRecentStopByRasberryPi(RasberryPi rasberryPi){
         String result = null;
         for(StoredRasberryPi storedRasberryPi : listOfStoredRasberryPi){
             if(storedRasberryPi.getBusNumPlate().equals(rasberryPi.getBusNumPlate())){
@@ -78,10 +79,32 @@ public class RasberryPiSockets {
         return result;
     }
 
-    public String getRecentNotNullStop(RasberryPi rasberryPi){
+    public String getRecentNotNullStopByRasberryPi(RasberryPi rasberryPi){
         String result = null;
         for(StoredRasberryPi storedRasberryPi : listOfStoredRasberryPi){
             if(storedRasberryPi.getBusNumPlate().equals(rasberryPi.getBusNumPlate())){
+                result = storedRasberryPi.getRecentNotNullStop();
+                break;
+            }
+        }
+        return result;
+    }
+
+    public String getRecentStopByAndroid(Android android){
+        String result = null;
+        for(StoredRasberryPi storedRasberryPi : listOfStoredRasberryPi){
+            if(storedRasberryPi.getBusNumPlate().equals(android.getBusNumPlate())){
+                result = storedRasberryPi.getRecentStop();
+                break;
+            }
+        }
+        return result;
+    }
+
+    public String getRecentNotNullStopByAndroid(Android android){
+        String result = null;
+        for(StoredRasberryPi storedRasberryPi : listOfStoredRasberryPi){
+            if(storedRasberryPi.getBusNumPlate().equals(android.getBusNumPlate())){
                 result = storedRasberryPi.getRecentNotNullStop();
                 break;
             }

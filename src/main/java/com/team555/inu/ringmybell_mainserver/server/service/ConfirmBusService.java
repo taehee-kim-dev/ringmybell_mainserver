@@ -5,10 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team555.inu.ringmybell_mainserver.server.dao.RequestBusStopsListDao;
 import com.team555.inu.ringmybell_mainserver.server.networking.android.SendOnceToAndroid;
 import com.team555.inu.ringmybell_mainserver.server.sockets.AndroidSockets;
-import com.team555.inu.ringmybell_mainserver.server.vo.Android;
-import com.team555.inu.ringmybell_mainserver.server.vo.BusLocation;
-import com.team555.inu.ringmybell_mainserver.server.vo.BusStop;
-import com.team555.inu.ringmybell_mainserver.server.vo.StoredAndroid;
+import com.team555.inu.ringmybell_mainserver.server.sockets.RasberryPiSockets;
+import com.team555.inu.ringmybell_mainserver.server.vo.*;
 import org.springframework.stereotype.Service;
 
 import java.net.Socket;
@@ -23,13 +21,16 @@ public class ConfirmBusService {
     private final RequestBusStopsListDao requestBusStopsListDao;
     private final SendOnceToAndroid sendOnceToAndroid;
     private final AndroidSockets androidSockets;
+    private final RasberryPiSockets rasberryPiSockets;
 
     public ConfirmBusService(RequestBusStopsListDao requestBusStopsListDao,
                              SendOnceToAndroid sendOnceToAndroid,
-                             AndroidSockets androidSockets) {
+                             AndroidSockets androidSockets,
+                             RasberryPiSockets rasberryPiSockets) {
         this.requestBusStopsListDao = requestBusStopsListDao;
         this.sendOnceToAndroid = sendOnceToAndroid;
         this.androidSockets = androidSockets;
+        this.rasberryPiSockets = rasberryPiSockets;
         objectMapper = new ObjectMapper();
     }
 
@@ -66,9 +67,8 @@ public class ConfirmBusService {
         // 위와 같이 담을 HashMap 객체를 생성하고,
         HashMap<String, BusLocation> resultHashMap2 = new HashMap<>();
 
-        BusLocation busLocation = new BusLocation();
-        busLocation.setRecentNotNullStop("test-RecentNotNullStop");
-        busLocation.setCurrentStop("test-38-378");
+        BusLocation busLocation = new BusLocation(rasberryPiSockets.getRecentStopByAndroid(android),
+                                                    rasberryPiSockets.getRecentNotNullStopByAndroid(android));
 
         // 결과 HashMap 제작
         resultHashMap2.put("busLocation", busLocation);

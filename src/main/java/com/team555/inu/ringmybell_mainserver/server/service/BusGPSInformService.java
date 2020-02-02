@@ -29,7 +29,7 @@ public class BusGPSInformService {
     public void run(RasberryPi rasberryPi){
 
         String checkedCurrentStop = checkBusLocationDao.run(rasberryPi);
-        String beforeStop = rasberryPiSockets.getRecentStop(rasberryPi);
+        String beforeStop = rasberryPiSockets.getRecentStopByRasberryPi(rasberryPi);
 
         log.info(rasberryPi.getBusNumPlate() + "의 현재 위치 : " + checkedCurrentStop);
 
@@ -66,13 +66,13 @@ public class BusGPSInformService {
 
             log.info("안드로이드에게 BusLocation 객체 전송");
             log.info("currentStop : " + checkedCurrentStop);
-            log.info("recentNotNullStop : " + rasberryPiSockets.getRecentNotNullStop(rasberryPi));
+            log.info("recentNotNullStop : " + rasberryPiSockets.getRecentNotNullStopByRasberryPi(rasberryPi));
 
-//            for(StoredAndroid storedAndroid : androidSockets.getListOfStoredAndroid()){
-//                if(storedAndroid.getBusNumPlate().equals(rasberryPi.getBusNumPlate())){
-//                    sendRepeatedlyToAndroid.run(storedAndroid.getBufferedWriter(), new BusLocation(checkedCurrentStop, rasberryPiSockets.getRecentNotNullStop(rasberryPi)));
-//                }
-//            }
+            for(StoredAndroid storedAndroid : androidSockets.getListOfStoredAndroid()){
+                if(storedAndroid.getBusNumPlate().equals(rasberryPi.getBusNumPlate())){
+                    sendRepeatedlyToAndroid.run(storedAndroid.getBufferedWriter(), new BusLocation(checkedCurrentStop, rasberryPiSockets.getRecentNotNullStopByRasberryPi(rasberryPi)));
+                }
+            }
         }
 
     }

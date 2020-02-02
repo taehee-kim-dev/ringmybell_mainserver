@@ -5,24 +5,24 @@ public class BusLocation {
 
     // 버스의 현재 정류장 고유번호
     // 현재 위치가 특정 정류장의 반경 50m 안이라면 해당 정류장의 고유번호가 현재 위치값이 되고, 아니라면 null 값이 됨.
-    private String currentStop;
+    private String recentStop;
 
     // 가장 최근 null이 아닌 정류장 고유번호
     private String recentNotNullStop;
 
     public BusLocation() {}
 
-    public BusLocation(String currentStop, String recentNotNullStop) {
-        this.currentStop = currentStop;
+    public BusLocation(String recentStop, String recentNotNullStop) {
+        this.recentStop = recentStop;
         this.recentNotNullStop = recentNotNullStop;
     }
 
-    public String getCurrentStop() {
-        return currentStop;
+    public String getRecentStop() {
+        return recentStop;
     }
 
-    public void setCurrentStop(String currentStop) {
-        this.currentStop = currentStop;
+    public void setRecentStop(String recentStop) {
+        this.recentStop = recentStop;
     }
 
     public String getRecentNotNullStop() {
