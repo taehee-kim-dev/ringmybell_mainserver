@@ -60,6 +60,10 @@ public class BusGPSInformService {
 
             }
 
+            log.info("안드로이드에게 BusLocation 객체 전송");
+            log.info("currentStop : " + checkedCurrentStop);
+            log.info("recentNotNullStop : " + rasberryPiSockets.getRecentNotNullStop(rasberryPi));
+
 //            for(StoredAndroid storedAndroid : androidSockets.getListOfStoredAndroid()){
 //                if(storedAndroid.getBusNumPlate().equals(rasberryPi.getBusNumPlate())){
 //                    sendRepeatedlyToAndroid.run(storedAndroid.getBufferedWriter(), new BusLocation(checkedCurrentStop, rasberryPiSockets.getRecentNotNullStop(rasberryPi)));
