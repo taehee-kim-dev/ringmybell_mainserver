@@ -2,12 +2,14 @@ package com.team555.inu.ringmybell_mainserver.server.sockets;
 
 import com.team555.inu.ringmybell_mainserver.server.vo.Android;
 import com.team555.inu.ringmybell_mainserver.server.vo.StoredAndroid;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.net.Socket;
 import java.util.ArrayList;
 
+@Getter
 @Slf4j
 @Component
 public class AndroidSockets {

@@ -21,10 +21,8 @@ public class StoredRasberryPi extends RasberryPi{
     private Socket socket;
     // 연결된 소켓의 BufferedWriter
     private BufferedWriter bufferedWriter;
-    // 현재 정류장
-    private String currentStop;
-    // 이전 정류장
-    private String beforeStop;
+    // 최근 정류장
+    private String recentStop;
     // 가장 최근 null이 아닌 정류장
     private String recentNotNullStop;
 
@@ -39,8 +37,7 @@ public class StoredRasberryPi extends RasberryPi{
             e.printStackTrace();
         }
 
-        this.currentStop = null;
-        this.beforeStop = null;
+        this.recentStop = null;
         this.recentNotNullStop = null;
 
         log.info("StoredRasberryPi객체 생성 완료");

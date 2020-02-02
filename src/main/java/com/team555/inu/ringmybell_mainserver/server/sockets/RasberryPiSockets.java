@@ -37,18 +37,44 @@ public class RasberryPiSockets {
         showAllRasberryPiSockets();
     }
 
-    public void updateStoredRasberryPi(RasberryPi rasberrypi){
+    public void updateStoredRasberryPi(RasberryPi rasberryPi, String checkedCurrentStop){
         log.info("StoredRasberryPi의 현재 위치 업데이트");
 
         for(StoredRasberryPi storedRasberryPi : listOfStoredRasberryPi){
-            if(storedRasberryPi.getBusNumPlate().equals(rasberrypi.getBusNumPlate())){
-                storedRasberryPi.setLat(storedRasberryPi.getLat());
-                storedRasberryPi.setLon(storedRasberryPi.getLon());
-                log.info("StoredRasberryPi의 stopToBook 업데이트 완료");
+            if(storedRasberryPi.getBusNumPlate().equals(rasberryPi.getBusNumPlate())){
+                storedRasberryPi.setLat(rasberryPi.getLat());
+                storedRasberryPi.setLon(rasberryPi.getLon());
+                storedRasberryPi.setRecentStop(checkedCurrentStop);
+                if(checkedCurrentStop != null){
+                    storedRasberryPi.setRecentNotNullStop(checkedCurrentStop);
+                }
+                log.info("StoredRasberryPi 업데이트 완료");
                 break;
             }
         }
         showAllRasberryPiSockets();
+    }
+
+    public String getRecentStop(RasberryPi rasberryPi){
+        String result = null;
+        for(StoredRasberryPi storedRasberryPi : listOfStoredRasberryPi){
+            if(storedRasberryPi.getBusNumPlate().equals(rasberryPi.getBusNumPlate())){
+                result = storedRasberryPi.getRecentStop();
+                break;
+            }
+        }
+        return result;
+    }
+
+    public String getRecentNotNullStop(RasberryPi rasberryPi){
+        String result = null;
+        for(StoredRasberryPi storedRasberryPi : listOfStoredRasberryPi){
+            if(storedRasberryPi.getBusNumPlate().equals(rasberryPi.getBusNumPlate())){
+                result = storedRasberryPi.getRecentNotNullStop();
+                break;
+            }
+        }
+        return result;
     }
 
     private void showAllRasberryPiSockets(){
@@ -60,8 +86,7 @@ public class RasberryPiSockets {
             log.info("lon : " + sr.getLon());
             log.info("socket : " + sr.getSocket());
             log.info("bufferedWriter : " + sr.getBufferedWriter());
-            log.info("currentStop : " + sr.getCurrentStop());
-            log.info("beforeStop : " + sr.getBeforeStop());
+            log.info("recentStop : " + sr.getRecentStop());
             log.info("recentNotNullStop : " + sr.getRecentNotNullStop() + "\n");
         }
     }
