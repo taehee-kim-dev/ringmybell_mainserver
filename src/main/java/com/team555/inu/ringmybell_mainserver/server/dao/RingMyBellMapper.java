@@ -1,9 +1,6 @@
 package com.team555.inu.ringmybell_mainserver.server.dao;
 
-import com.team555.inu.ringmybell_mainserver.server.vo.Android;
-import com.team555.inu.ringmybell_mainserver.server.vo.BusStop;
-import com.team555.inu.ringmybell_mainserver.server.vo.RasberryPi;
-import com.team555.inu.ringmybell_mainserver.server.vo.SearchedBusRoute;
+import com.team555.inu.ringmybell_mainserver.server.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -25,4 +22,6 @@ public interface RingMyBellMapper {
     // 데이터베이스에 저장된 780-1번 정류장들의 GPS 데이터를 기반으로
     // 현재 버스의 위치를 확인함
     String checkBusLocationOf780_1(RasberryPi rasberryPi) throws Exception;
+    // 버스 도착시 예약정보 삭제
+    int arriveAtTheBusStop(BusArriveInform busArriveInform) throws Exception;
 }

@@ -1,9 +1,11 @@
 package com.team555.inu.ringmybell_mainserver.server.service;
 
+import com.team555.inu.ringmybell_mainserver.server.dao.BusArrivedDao;
 import com.team555.inu.ringmybell_mainserver.server.dao.CheckBusLocationDao;
 import com.team555.inu.ringmybell_mainserver.server.networking.android.SendRepeatedlyToAndroid;
 import com.team555.inu.ringmybell_mainserver.server.sockets.AndroidSockets;
 import com.team555.inu.ringmybell_mainserver.server.sockets.RasberryPiSockets;
+import com.team555.inu.ringmybell_mainserver.server.vo.BusArriveInform;
 import com.team555.inu.ringmybell_mainserver.server.vo.BusLocation;
 import com.team555.inu.ringmybell_mainserver.server.vo.RasberryPi;
 import com.team555.inu.ringmybell_mainserver.server.vo.StoredAndroid;
@@ -18,6 +20,7 @@ public class BusGPSInformService {
 
     private final CheckBusLocationDao checkBusLocationDao;
     private final RasberryPiSockets rasberryPiSockets;
+    private final BusArrivedDao busArrivedDao;
     private final AndroidSockets androidSockets;
     private final SendRepeatedlyToAndroid sendRepeatedlyToAndroid;
 
@@ -30,6 +33,7 @@ public class BusGPSInformService {
 
         // StoredRasberryPi 업데이트
         rasberryPiSockets.updateStoredRasberryPi(rasberryPi, checkedCurrentStop);
+
 
         // 정류장의 50m 반경 밖에서 안으로 들어가거나,
         // 안에서 밖으로 빠져나올 때
@@ -48,6 +52,12 @@ public class BusGPSInformService {
 
             if(beforeStop != null && checkedCurrentStop == null){
                 log.info(beforeStop + "에서 빠져나옴");
+
+                int deletedReservations = busArrivedDao.run(new BusArriveInform(rasberryPi.getBusNumPlate(), beforeStop));
+                log.info("deletedReservations : " + deletedReservations);
+
+                // deletedReservations값이 1이상이면 현재 버스의 벨 울림
+
             }
 
 //            for(StoredAndroid storedAndroid : androidSockets.getListOfStoredAndroid()){

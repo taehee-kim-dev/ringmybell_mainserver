@@ -47,6 +47,16 @@
         where
         android_client_identifier=#{identifier}
     </delete>
+    
+    <delete id="arriveAtTheBusStop" parameterType="BusArriveInform">
+        delete
+        from
+        reservations
+        where
+        bus_identifier=#{busNumPlate}
+        and
+        reservation_to_stop=#{leftStop}
+    </delete>
 
     <select id="checkBusLocationOf780_1" parameterType="RasberryPi" resultType="String">
         select stop_identifier,
