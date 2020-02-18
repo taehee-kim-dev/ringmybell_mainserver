@@ -10,6 +10,12 @@
         order by stop_no asc
     </select>
 
+    <select id="selectBusStopsListOf908" parameterType="String" resultType="BusStop">
+        select*from
+        bus_908_stops
+        order by stop_no asc
+    </select>
+
     <select id="selectSearchedBusRoutesList" parameterType="Android" resultType="SearchedBusRoute">
         select*from bus_routes where bus_route like CONCAT('%', #{routeNum}, '%') order by bus_route asc
     </select>
