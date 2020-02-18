@@ -56,8 +56,17 @@ public class DataAnalyzeController {
 
         // 수신한 JSON형 문자열 데이터에 ":" 문자가 있는지 판단하여 유효성 검사
         // 없다면 유효하지 않은 데이터이므로 에러 로그 출력 후 리턴
-        if(!JSONDataStr.contains(":")){
-            log.error("문자열에 \":\"가 포함되어 있지 않아 유효하지 않은 데이터임.");
+        if(!(JSONDataStr.contains(":") ||
+                JSONDataStr.contains("confirmBus") ||
+                JSONDataStr.contains("addReservation") ||
+                JSONDataStr.contains("updateReservation") ||
+                JSONDataStr.contains("deleteReservation") ||
+                JSONDataStr.contains("ringImmediately") ||
+                JSONDataStr.contains("searchBusRoute") ||
+                JSONDataStr.contains("requestBusRoute") ||
+                JSONDataStr.contains("registerBus") ||
+                JSONDataStr.contains("busGPSInform"))){
+            log.error("유효하지 않은 데이터임.");
             return;
         }
 
