@@ -11,7 +11,7 @@ import lombok.Setter;
 public class SearchedBusRoute {
 
     // 인덱스 번호(예:1)
-    private Integer num;
+    private int num;
     // 버스 노선번호(예:"780-1")
     private String bus_route;
     // 버스 노선 타입(예:"간선")
