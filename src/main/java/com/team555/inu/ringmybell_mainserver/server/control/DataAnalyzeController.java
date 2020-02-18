@@ -54,6 +54,13 @@ public class DataAnalyzeController {
     // 안드로이드 클라이언트로부터 받은 JSON String 데이터를 분석하는 함수
     public void Analyze(String JSONDataStr, Socket socket){
 
+        // 수신한 JSON형 문자열 데이터에 ":" 문자가 있는지 판단하여 유효성 검사
+        // 없다면 유효하지 않은 데이터이므로 에러 로그 출력 후 리턴
+        if(!JSONDataStr.contains(":")){
+            log.error("문자열에 \":\"가 포함되어 있지 않아 유효하지 않은 데이터임.");
+            return;
+        }
+
         HashMap<String, Object> hashMapData = null;
 
         // JSON String Data를 HashMap객체로 변환
