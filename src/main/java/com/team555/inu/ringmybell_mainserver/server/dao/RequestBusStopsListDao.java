@@ -32,6 +32,7 @@ public class RequestBusStopsListDao {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                break;
             default:
                 log.error("RequestBusStopsListDao에서 요청 routeNum의 값이 switch문의 default로 빠짐.");
         }
