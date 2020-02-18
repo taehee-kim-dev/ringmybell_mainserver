@@ -128,7 +128,7 @@ public class DataAnalyzeController {
                 log.info("requestBusRoute 요청 도착");
 
                 // requestBusRouteService로 Android객체, socket 넘김.
-                requestBusRouteService.run(objectMapper.convertValue(hashMapData.get(key), String.class), socket);
+                requestBusRouteService.run(objectMapper.convertValue(hashMapData.get(key), Android.class), socket);
 
                 break;
             case "registerBus":

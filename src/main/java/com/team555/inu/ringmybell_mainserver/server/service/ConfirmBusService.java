@@ -44,7 +44,7 @@ public class ConfirmBusService {
         // 데이터베이스에서 android객체의 routeNum으로 노선정보를 검색하여 List<BusStop>형태로 결과를 받아냄.
 
         String routeNum = android.getRouteNum();
-        List<BusStop> listOfBusStops = requestBusStopsListDao.run(routeNum);
+        List<BusStop> listOfBusStops = requestBusStopsListDao.run(android);
 
         // 결과 HashMap 제작
         resultHashMap1.put("busRoute", listOfBusStops);

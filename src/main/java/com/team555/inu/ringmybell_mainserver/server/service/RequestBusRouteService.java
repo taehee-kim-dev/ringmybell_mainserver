@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team555.inu.ringmybell_mainserver.server.dao.RequestBusStopsListDao;
 import com.team555.inu.ringmybell_mainserver.server.networking.android.SendOnceToAndroid;
+import com.team555.inu.ringmybell_mainserver.server.vo.Android;
 import com.team555.inu.ringmybell_mainserver.server.vo.BusStop;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class RequestBusRouteService {
         this.sendOnceToAndroid = sendOnceToAndroid;
     }
 
-    public void run(String requestedRouteNum, Socket socket){
+    public void run(Android android, Socket socket){
 
         // 해당 차량 노선의 노선정류장 BusStop객체 List를 HashMap에 담아 SendOnceToAndroid로 보냄
         // {"respondBusRoute", List<BusStop객체>}
@@ -34,7 +35,7 @@ public class RequestBusRouteService {
         HashMap<String, List<BusStop>> resultHashMap = new HashMap<>();
 
         // 데이터베이스에서 requestedRouteNum으로 노선정보를 검색하여 List<BusStop>형태로 결과를 받아냄.
-        List<BusStop> listOfBusStops = requestBusStopsListDao.run(requestedRouteNum);
+        List<BusStop> listOfBusStops = requestBusStopsListDao.run(android);
 
         // 결과 HashMap 제작
         resultHashMap.put("respondBusRoute", listOfBusStops);
