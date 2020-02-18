@@ -18,7 +18,7 @@ public interface RingMyBellMapper {
     // 예약 삭제
     int deleteReservation(Android android) throws Exception;
     // 버스노선 검색
-    List<SearchedBusRoute> selectSearchedBusRoutesList(String searchKeyword) throws Exception;
+    List<SearchedBusRoute> selectSearchedBusRoutesList(Android android) throws Exception;
     // 데이터베이스에 저장된 780-1번 정류장들의 GPS 데이터를 기반으로
     // 현재 버스의 위치를 확인함
     String checkBusLocationOf780_1(RasberryPi rasberryPi) throws Exception;
