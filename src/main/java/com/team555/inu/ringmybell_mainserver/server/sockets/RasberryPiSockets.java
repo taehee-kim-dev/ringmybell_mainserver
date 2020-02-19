@@ -32,10 +32,16 @@ public class RasberryPiSockets {
     }
 
     public void addStoredRasberryPi(StoredRasberryPi storedRasberryPi){
-        listOfStoredRasberryPi.add(storedRasberryPi);
 
-        log.info("listOfStoredRasberryPi에 StoredRasberryPi 추가 완료");
-        showAllRasberryPiSockets();
+        for(StoredRasberryPi sr : listOfStoredRasberryPi){
+            // 만약 기존에 같은 차량번호의 객체가 없다면
+            if(sr.getBusNumPlate().equals(storedRasberryPi.getBusNumPlate())){
+                listOfStoredRasberryPi.add(storedRasberryPi);
+
+                log.info("listOfStoredRasberryPi에 StoredRasberryPi 추가 완료");
+                showAllRasberryPiSockets();
+            }
+        }
     }
 
     public void deleteStoredRasberryPi(Socket socket){
@@ -68,24 +74,6 @@ public class RasberryPiSockets {
 
         showAllRasberryPiSockets();
 
-        for(StoredRasberryPi storedRasberryPi : listOfStoredRasberryPi){
-            if(storedRasberryPi.getLat() == 1.1 || storedRasberryPi.getLat() == null ||
-                    storedRasberryPi.getLon() == 2.2 || storedRasberryPi.getLon() == null){
-                listOfStoredRasberryPi.remove(storedRasberryPi);
-                log.error("유효하지 않은 storedRasberryPi 객체가 존재하여 삭제함.");
-                log.error("삭제된 stroedRasberryPi 정보 : \n");
-                log.info("busNumPlate : " + storedRasberryPi.getBusNumPlate());
-                log.info("routeNum : " + storedRasberryPi.getRouteNum());
-                log.info("lat : " + storedRasberryPi.getLat());
-                log.info("lon : " + storedRasberryPi.getLon());
-                log.info("socket : " + storedRasberryPi.getSocket());
-                log.info("bufferedWriter : " + storedRasberryPi.getBufferedWriter());
-                log.info("recentStop : " + storedRasberryPi.getRecentStop());
-                log.info("recentNotNullStop : " + storedRasberryPi.getRecentNotNullStop() + "\n");
-            }
-        }
-
-        showAllRasberryPiSockets();
     }
 
     public String getRecentStopByRasberryPi(RasberryPi rasberryPi){
