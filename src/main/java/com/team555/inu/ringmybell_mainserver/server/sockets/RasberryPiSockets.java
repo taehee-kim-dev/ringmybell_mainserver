@@ -38,15 +38,6 @@ public class RasberryPiSockets {
                 // 기존에 같은 차량번호로 객체가 존재한다면 먼저 삭제
                 listOfStoredRasberryPi.remove(sr);
                 log.error("유효하지 않은 storedRasberryPi 객체가 존재하여 삭제함.");
-                log.error("삭제된 stroedRasberryPi 정보 : \n");
-                log.info("busNumPlate : " + sr.getBusNumPlate());
-                log.info("routeNum : " + sr.getRouteNum());
-                log.info("lat : " + sr.getLat());
-                log.info("lon : " + sr.getLon());
-                log.info("socket : " + sr.getSocket());
-                log.info("bufferedWriter : " + sr.getBufferedWriter());
-                log.info("recentStop : " + sr.getRecentStop());
-                log.info("recentNotNullStop : " + sr.getRecentNotNullStop() + "\n");
             }
         }
 
