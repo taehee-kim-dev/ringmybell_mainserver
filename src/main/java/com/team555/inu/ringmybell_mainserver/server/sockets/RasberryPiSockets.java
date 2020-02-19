@@ -38,6 +38,7 @@ public class RasberryPiSockets {
                 // 기존에 같은 차량번호로 객체가 존재한다면 먼저 삭제
                 listOfStoredRasberryPi.remove(sr);
                 log.error("유효하지 않은 storedRasberryPi 객체가 존재하여 삭제함.");
+                break;
             }
         }
 
