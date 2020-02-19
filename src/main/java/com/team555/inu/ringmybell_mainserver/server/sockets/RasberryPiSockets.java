@@ -34,14 +34,26 @@ public class RasberryPiSockets {
     public void addStoredRasberryPi(StoredRasberryPi storedRasberryPi){
 
         for(StoredRasberryPi sr : listOfStoredRasberryPi){
-            // 만약 기존에 같은 차량번호의 객체가 없다면
             if(sr.getBusNumPlate().equals(storedRasberryPi.getBusNumPlate())){
-                listOfStoredRasberryPi.add(storedRasberryPi);
-
-                log.info("listOfStoredRasberryPi에 StoredRasberryPi 추가 완료");
-                showAllRasberryPiSockets();
+                // 기존에 같은 차량번호로 객체가 존재한다면 먼저 삭제
+                listOfStoredRasberryPi.remove(sr);
+                log.error("유효하지 않은 storedRasberryPi 객체가 존재하여 삭제함.");
+                log.error("삭제된 stroedRasberryPi 정보 : \n");
+                log.info("busNumPlate : " + sr.getBusNumPlate());
+                log.info("routeNum : " + sr.getRouteNum());
+                log.info("lat : " + sr.getLat());
+                log.info("lon : " + sr.getLon());
+                log.info("socket : " + sr.getSocket());
+                log.info("bufferedWriter : " + sr.getBufferedWriter());
+                log.info("recentStop : " + sr.getRecentStop());
+                log.info("recentNotNullStop : " + sr.getRecentNotNullStop() + "\n");
             }
         }
+
+        listOfStoredRasberryPi.add(storedRasberryPi);
+
+        log.info("listOfStoredRasberryPi에 StoredRasberryPi 추가 완료");
+        showAllRasberryPiSockets();
     }
 
     public void deleteStoredRasberryPi(Socket socket){
@@ -73,7 +85,6 @@ public class RasberryPiSockets {
         }
 
         showAllRasberryPiSockets();
-
     }
 
     public String getRecentStopByRasberryPi(RasberryPi rasberryPi){
