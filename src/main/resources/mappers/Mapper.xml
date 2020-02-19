@@ -37,6 +37,13 @@
         )
     </insert>
 
+    <select id="countReservation" parameterType="Android" resultType="int">
+        select count(*)
+        from reservations
+        where
+        android_client_identifier=#{identifier}
+    </select>
+
     <update id="updateReservation" parameterType="Android">
         update
         reservations

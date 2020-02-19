@@ -13,11 +13,25 @@ public class AddReservationDao {
     public int run(Android android){
         int result = -100;
 
+        try {
+            result = ringMyBellMapper.countReservation(android);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if(result > 0){
+            try {
+                result = ringMyBellMapper.updateReservation(android);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else if(result == 0){
             try {
                 result = ringMyBellMapper.addReservation(android);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
 
         return result;
     }
