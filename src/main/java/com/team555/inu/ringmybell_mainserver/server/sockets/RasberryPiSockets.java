@@ -54,23 +54,6 @@ public class RasberryPiSockets {
         log.info("StoredRasberryPi의 현재 위치 업데이트");
 
         for(StoredRasberryPi storedRasberryPi : listOfStoredRasberryPi){
-            if(storedRasberryPi.getLat() == 1.1 || storedRasberryPi.getLat() == null ||
-                storedRasberryPi.getLon() == 2.2 || storedRasberryPi.getLon() == null){
-                    listOfStoredRasberryPi.remove(storedRasberryPi);
-                    log.error("유효하지 않은 storedRasberryPi 객체가 존재하여 삭제함.");
-                    log.error("삭제된 stroedRasberryPi 정보 : \n");
-                    log.info("busNumPlate : " + storedRasberryPi.getBusNumPlate());
-                    log.info("routeNum : " + storedRasberryPi.getRouteNum());
-                    log.info("lat : " + storedRasberryPi.getLat());
-                    log.info("lon : " + storedRasberryPi.getLon());
-                    log.info("socket : " + storedRasberryPi.getSocket());
-                    log.info("bufferedWriter : " + storedRasberryPi.getBufferedWriter());
-                    log.info("recentStop : " + storedRasberryPi.getRecentStop());
-                    log.info("recentNotNullStop : " + storedRasberryPi.getRecentNotNullStop() + "\n");
-            }
-        }
-
-        for(StoredRasberryPi storedRasberryPi : listOfStoredRasberryPi){
             if(storedRasberryPi.getBusNumPlate().equals(rasberryPi.getBusNumPlate())){
                 storedRasberryPi.setLat(rasberryPi.getLat());
                 storedRasberryPi.setLon(rasberryPi.getLon());
@@ -82,6 +65,26 @@ public class RasberryPiSockets {
                 break;
             }
         }
+
+        showAllRasberryPiSockets();
+
+        for(StoredRasberryPi storedRasberryPi : listOfStoredRasberryPi){
+            if(storedRasberryPi.getLat() == 1.1 || storedRasberryPi.getLat() == null ||
+                    storedRasberryPi.getLon() == 2.2 || storedRasberryPi.getLon() == null){
+                listOfStoredRasberryPi.remove(storedRasberryPi);
+                log.error("유효하지 않은 storedRasberryPi 객체가 존재하여 삭제함.");
+                log.error("삭제된 stroedRasberryPi 정보 : \n");
+                log.info("busNumPlate : " + storedRasberryPi.getBusNumPlate());
+                log.info("routeNum : " + storedRasberryPi.getRouteNum());
+                log.info("lat : " + storedRasberryPi.getLat());
+                log.info("lon : " + storedRasberryPi.getLon());
+                log.info("socket : " + storedRasberryPi.getSocket());
+                log.info("bufferedWriter : " + storedRasberryPi.getBufferedWriter());
+                log.info("recentStop : " + storedRasberryPi.getRecentStop());
+                log.info("recentNotNullStop : " + storedRasberryPi.getRecentNotNullStop() + "\n");
+            }
+        }
+
         showAllRasberryPiSockets();
     }
 
