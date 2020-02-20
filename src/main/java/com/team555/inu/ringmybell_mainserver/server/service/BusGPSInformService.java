@@ -6,10 +6,7 @@ import com.team555.inu.ringmybell_mainserver.server.networking.android.SendRepea
 import com.team555.inu.ringmybell_mainserver.server.networking.rasberrypi.RingBellToRasberryPi;
 import com.team555.inu.ringmybell_mainserver.server.sockets.AndroidSockets;
 import com.team555.inu.ringmybell_mainserver.server.sockets.RasberryPiSockets;
-import com.team555.inu.ringmybell_mainserver.server.vo.BusArriveInform;
-import com.team555.inu.ringmybell_mainserver.server.vo.BusLocation;
-import com.team555.inu.ringmybell_mainserver.server.vo.RasberryPi;
-import com.team555.inu.ringmybell_mainserver.server.vo.StoredAndroid;
+import com.team555.inu.ringmybell_mainserver.server.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,34 +25,52 @@ public class BusGPSInformService {
 
     public void run(RasberryPi rasberryPi){
 
-        String checkedCurrentStop = checkBusLocationDao.run(rasberryPi);
-        String beforeStop = rasberryPiSockets.getRecentStopByRasberryPi(rasberryPi);
+        // 데이터베이스에서 조회된 버스 현재 위치 정보
+        CheckedBusLocation checkedBusLocation = checkBusLocationDao.run(rasberryPi);
+        String checkedCurrentStop = null;
+        // 이전 정류장 고유번호
+        String beforeStopIdentifier = rasberryPiSockets.getRecentStopIdentifierByRasberryPi(rasberryPi);
+        String beforeStopName = rasberryPiSockets.getRecentStopNameByRasberryPi(rasberryPi);
 
-        log.info(rasberryPi.getBusNumPlate() + "의 현재 위치 : " + checkedCurrentStop);
+        if(checkedBusLocation == null){
+            log.info("버스 현재위치 반경 50m 내에 정류장 없음.");
+            checkedBusLocation = new CheckedBusLocation(null, null, null, false);
+            // StoredRasberryPi 업데이트
+            rasberryPiSockets.updateStoredRasberryPi(rasberryPi, checkedBusLocation);
+        }else{
+            log.info("버스 현재위치 반경 50m 내에 정류장 존재.");
+            log.info(rasberryPi.getBusNumPlate() + "의 현재 위치 : ");
+            log.info("stop_name : " + checkedBusLocation.getStop_name());
+            log.info("stop_identifier : " + checkedBusLocation.getStop_identifier());
+            log.info("direction : " + checkedBusLocation.getDirection());
+            log.info("direction_setting : " + checkedBusLocation.getDirection_setting());
 
-        // StoredRasberryPi 업데이트
-        rasberryPiSockets.updateStoredRasberryPi(rasberryPi, checkedCurrentStop);
+            // StoredRasberryPi 업데이트
+            rasberryPiSockets.updateStoredRasberryPi(rasberryPi, checkedBusLocation);
+            checkedCurrentStop = checkedBusLocation.getStop_identifier();
+        }
 
 
         // 정류장의 50m 반경 밖에서 안으로 들어가거나,
         // 안에서 밖으로 빠져나올 때
-        if(beforeStop == null && checkedCurrentStop != null ||
-            beforeStop != null && checkedCurrentStop == null){
+        if(beforeStopName == null && checkedCurrentStop != null ||
+                beforeStopName != null && checkedCurrentStop == null){
             /*
             * 해당 버스 차량번호에 탑승하고 있는 승객들의 Android 객체를 검색하여,
             * 그 객체에 있는 bufferedWriter 객체를 sendToAndroidRepeatedly에 넘기고,
-            * checkedCurrentStop, recentNotNullStop의 필드값을 갖고있는 BusLocation객체 또한 넘겨
+            * BusLocation객체 또한 넘겨
             * 해당 버스 차량번호에 탑승하고 있는 승객들의 Android 클라이언트들에게 BusLocation객체를 보내준다.
             * */
 
-            if(beforeStop == null && checkedCurrentStop != null){
-                log.info(checkedCurrentStop + "으로 진입");
+            if(beforeStopName == null && checkedCurrentStop != null){
+                log.info(checkedBusLocation.getStop_name() + "으로 진입");
+                log.info("운행 방향 : " + checkedBusLocation.getDirection());
             }
 
-            if(beforeStop != null && checkedCurrentStop == null){
-                log.info(beforeStop + "에서 빠져나옴");
+            if(beforeStopName != null && checkedCurrentStop == null){
+                log.info(beforeStopName + "에서 빠져나옴");
 
-                int deletedReservations = busArrivedDao.run(new BusArriveInform(rasberryPi.getBusNumPlate(), beforeStop));
+                int deletedReservations = busArrivedDao.run(new BusArriveInform(rasberryPi.getBusNumPlate(), beforeStopIdentifier));
                 log.info("deletedReservations : " + deletedReservations);
 
                 // deletedReservations값이 1이상이면 현재 버스의 벨 울림
@@ -66,11 +81,11 @@ public class BusGPSInformService {
 
             log.info("안드로이드에게 BusLocation 객체 전송");
             log.info("currentStop : " + checkedCurrentStop);
-            log.info("recentNotNullStop : " + rasberryPiSockets.getRecentNotNullStopByRasberryPi(rasberryPi));
+            log.info("recentNotNullStop : " + rasberryPiSockets.getRecentNotNullStopIdentifierByRasberryPi(rasberryPi));
 
             for(StoredAndroid storedAndroid : androidSockets.getListOfStoredAndroid()){
                 if(storedAndroid.getBusNumPlate().equals(rasberryPi.getBusNumPlate())){
-                    sendRepeatedlyToAndroid.run(storedAndroid.getBufferedWriter(), new BusLocation(checkedCurrentStop, rasberryPiSockets.getRecentNotNullStopByRasberryPi(rasberryPi)));
+                    sendRepeatedlyToAndroid.run(storedAndroid.getBufferedWriter(), new BusLocation(checkedCurrentStop, rasberryPiSockets.getRecentNotNullStopIdentifierByRasberryPi(rasberryPi)));
                 }
             }
         }

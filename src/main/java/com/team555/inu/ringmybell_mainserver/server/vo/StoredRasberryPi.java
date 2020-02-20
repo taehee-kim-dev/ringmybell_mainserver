@@ -21,10 +21,16 @@ public class StoredRasberryPi extends RasberryPi{
     private Socket socket;
     // 연결된 소켓의 BufferedWriter
     private BufferedWriter bufferedWriter;
-    // 최근 정류장
-    private String recentStop;
-    // 가장 최근 null이 아닌 정류장
-    private String recentNotNullStop;
+    // 최근 정류장 고유번호
+    private String recentStopIdentifier;
+    // 최근 정류장 이름
+    private String recentStopName;
+    // 가장 최근 null이 아닌 정류장 고유번호
+    private String recentNotNullStopIdentifier;
+    // 가장 최근 null이 아닌 정류장 이름
+    private String recentNotNullStopName;
+    // 현재 운행 방향
+    private String direction;
 
     public StoredRasberryPi(RasberryPi rasberryPi, Socket socket) {
         super(rasberryPi.getBusNumPlate(), rasberryPi.getRouteNum(), rasberryPi.getLat(), rasberryPi.getLon());
@@ -37,8 +43,11 @@ public class StoredRasberryPi extends RasberryPi{
             e.printStackTrace();
         }
 
-        this.recentStop = null;
-        this.recentNotNullStop = null;
+        this.recentStopIdentifier = null;
+        this.recentStopName = null;
+        this.recentNotNullStopIdentifier = null;
+        this.recentNotNullStopName = null;
+        this.direction = null;
 
         log.info("StoredRasberryPi객체 생성 완료");
     }

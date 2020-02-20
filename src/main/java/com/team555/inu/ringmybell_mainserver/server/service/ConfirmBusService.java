@@ -67,8 +67,8 @@ public class ConfirmBusService {
         // 위와 같이 담을 HashMap 객체를 생성하고,
         HashMap<String, BusLocation> resultHashMap2 = new HashMap<>();
 
-        BusLocation busLocation = new BusLocation(rasberryPiSockets.getRecentStopByAndroid(android),
-                                                    rasberryPiSockets.getRecentNotNullStopByAndroid(android));
+        BusLocation busLocation = new BusLocation(rasberryPiSockets.getRecentStopIdentifierByAndroid(android),
+                                                    rasberryPiSockets.getRecentNotNullStopIdentifierByAndroid(android));
 
         // 결과 HashMap 제작
         resultHashMap2.put("busLocation", busLocation);
