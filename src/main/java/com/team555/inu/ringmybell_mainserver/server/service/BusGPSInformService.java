@@ -27,6 +27,7 @@ public class BusGPSInformService {
 
         // 데이터베이스에서 조회된 버스 현재 위치 정보
         CheckedBusLocation checkedBusLocation = checkBusLocationDao.run(rasberryPi);
+
         String checkedCurrentStop = null;
         // 이전 정류장 고유번호
         String beforeStopIdentifier = rasberryPiSockets.getRecentStopIdentifierByRasberryPi(rasberryPi);
@@ -38,6 +39,29 @@ public class BusGPSInformService {
             // StoredRasberryPi 업데이트
             rasberryPiSockets.updateStoredRasberryPi(rasberryPi, checkedBusLocation);
         }else{
+
+            /*
+             *   현재 데이터베이스에서 조회된 위치정보에서,
+             *   운행방향이 기존 버스의 운행방향과 다를 때,
+             *   만약 현재 위치가 방향세팅 정류장이 아니라면, 이 버스위치정보 수신을 무시한다.
+             * */
+
+            if(!checkedBusLocation.getDirection().equals(rasberryPiSockets.getRecentDirectionByRasberryPi(rasberryPi))){
+                if(checkedBusLocation.getDirection_setting() == false){
+                    log.info("버스가 현재 가장 가까이 있는 정류장이 설정된 운행방향과 상이하여, 이 정보 무시.");
+
+                    log.info("버스 현재위치 반경 50m 내에 정류장 존재.");
+                    log.info(rasberryPi.getBusNumPlate() + "의 현재 위치 : ");
+                    log.info("stop_name : " + checkedBusLocation.getStop_name());
+                    log.info("stop_identifier : " + checkedBusLocation.getStop_identifier());
+                    log.info("direction : " + checkedBusLocation.getDirection());
+                    log.info("direction_setting : " + checkedBusLocation.getDirection_setting());
+                    return;
+                }
+
+            }
+
+
             log.info("버스 현재위치 반경 50m 내에 정류장 존재.");
             log.info(rasberryPi.getBusNumPlate() + "의 현재 위치 : ");
             log.info("stop_name : " + checkedBusLocation.getStop_name());
@@ -63,7 +87,7 @@ public class BusGPSInformService {
             * */
 
             if(beforeStopName == null && checkedCurrentStop != null){
-                log.info(checkedBusLocation.getStop_name() + "으로 진입");
+                log.info(checkedBusLocation.getStop_name() + "(으)로 진입");
                 log.info("운행 방향 : " + checkedBusLocation.getDirection());
             }
 
@@ -88,6 +112,8 @@ public class BusGPSInformService {
                     sendRepeatedlyToAndroid.run(storedAndroid.getBufferedWriter(), new BusLocation(checkedCurrentStop, rasberryPiSockets.getRecentNotNullStopIdentifierByRasberryPi(rasberryPi)));
                 }
             }
+
+            log.info("========================================>");
         }
 
     }

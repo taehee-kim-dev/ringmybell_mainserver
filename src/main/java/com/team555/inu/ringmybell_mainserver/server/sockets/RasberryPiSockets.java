@@ -82,7 +82,7 @@ public class RasberryPiSockets {
                 }
                 // 현재 위치한 정류장이 방향 설정 정류장이라면,
                 if(checkedBusLocation.getDirection_setting() == true){
-                    storedRasberryPi.setDirection(checkedBusLocation.getDirection());
+                    storedRasberryPi.setRecentDirection(checkedBusLocation.getDirection());
                 }
                 log.info("StoredRasberryPi 업데이트 완료");
                 break;
@@ -90,6 +90,17 @@ public class RasberryPiSockets {
         }
 
         showAllRasberryPiSockets();
+    }
+
+    public String getRecentDirectionByRasberryPi(RasberryPi rasberryPi){
+        String result = null;
+        for(StoredRasberryPi storedRasberryPi : listOfStoredRasberryPi){
+            if(storedRasberryPi.getBusNumPlate().equals(rasberryPi.getBusNumPlate())){
+                result = storedRasberryPi.getRecentDirection();
+                break;
+            }
+        }
+        return result;
     }
 
     public String getRecentStopIdentifierByRasberryPi(RasberryPi rasberryPi){
@@ -160,7 +171,7 @@ public class RasberryPiSockets {
             log.info("recentStopName : " + sr.getRecentStopName());
             log.info("recentNotNullStopIdentifier : " + sr.getRecentNotNullStopIdentifier());
             log.info("recentNotNullStopName : " + sr.getRecentNotNullStopName());
-            log.info("direction : " + sr.getDirection() + "\n");
+            log.info("direction : " + sr.getRecentDirection() + "\n");
         }
     }
 }

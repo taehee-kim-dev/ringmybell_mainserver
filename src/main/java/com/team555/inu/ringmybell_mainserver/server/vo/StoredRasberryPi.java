@@ -30,7 +30,7 @@ public class StoredRasberryPi extends RasberryPi{
     // 가장 최근 null이 아닌 정류장 이름
     private String recentNotNullStopName;
     // 현재 운행 방향
-    private String direction;
+    private String recentDirection;
 
     public StoredRasberryPi(RasberryPi rasberryPi, Socket socket) {
         super(rasberryPi.getBusNumPlate(), rasberryPi.getRouteNum(), rasberryPi.getLat(), rasberryPi.getLon());
@@ -47,7 +47,7 @@ public class StoredRasberryPi extends RasberryPi{
         this.recentStopName = null;
         this.recentNotNullStopIdentifier = null;
         this.recentNotNullStopName = null;
-        this.direction = null;
+        this.recentDirection = null;
 
         log.info("StoredRasberryPi객체 생성 완료");
     }
