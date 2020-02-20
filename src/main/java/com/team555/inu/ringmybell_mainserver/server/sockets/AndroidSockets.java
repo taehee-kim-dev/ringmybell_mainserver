@@ -2,6 +2,7 @@ package com.team555.inu.ringmybell_mainserver.server.sockets;
 
 import com.team555.inu.ringmybell_mainserver.server.vo.Android;
 import com.team555.inu.ringmybell_mainserver.server.vo.StoredAndroid;
+import com.team555.inu.ringmybell_mainserver.server.vo.StoredRasberryPi;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,18 @@ public class AndroidSockets {
     }
 
     public void addStoredAndroid(StoredAndroid storedAndroid){
+
+        for(StoredAndroid sa : listOfStoredAndroid){
+            if(sa.getIdentifier().equals(storedAndroid.getIdentifier())){
+                // 기존에 같은 안드로이드 식별자로 객체가 존재한다면 먼저 삭제
+                listOfStoredAndroid.remove(sa);
+                log.error("유효하지 않은 storedAndroid 객체가 존재하여 삭제함.");
+                break;
+            }
+        }
+
+
+
         listOfStoredAndroid.add(storedAndroid);
 
         log.info("listOfStoredAndroid에 StoredAndroid 추가 완료");
