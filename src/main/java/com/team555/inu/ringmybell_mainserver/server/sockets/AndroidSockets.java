@@ -25,7 +25,7 @@ public class AndroidSockets {
 
         for(StoredAndroid sa : listOfStoredAndroid){
             if(sa.getIdentifier().equals(storedAndroid.getIdentifier())){
-                // 기존에 같은 안드로이드 식별자로 객체가 존재한다면 먼저 삭제
+                // 기존에 같은 안드로이드 식별자로 객체가 존재한다면 먼저 삭제한다.
                 listOfStoredAndroid.remove(sa);
                 log.error("유효하지 않은 storedAndroid 객체가 존재하여 삭제함.");
                 break;
