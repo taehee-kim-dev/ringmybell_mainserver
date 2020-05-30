@@ -2,3 +2,10 @@
 spring:
   profiles:
     include: database
+
+
+server:
+  tomcat:
+    max-threads: 10000
+    accept-count: 3000
+
