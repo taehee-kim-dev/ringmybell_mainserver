@@ -6,7 +6,7 @@ spring:
 
 server:
   tomcat:
-    max-threads: 500
-    accept-count: 300
+    max-threads: 1000
+    accept-count: 500
 
 
