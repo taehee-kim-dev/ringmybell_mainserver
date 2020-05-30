@@ -12,7 +12,7 @@ public class ThreadConfig {
     @Bean
     public TaskExecutor thread1(){
         ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
-        threadPoolTaskExecutor.setCorePoolSize(8000);
+        threadPoolTaskExecutor.setCorePoolSize(300);
         threadPoolTaskExecutor.setThreadNamePrefix("socket_thread");
         threadPoolTaskExecutor.initialize();
         return threadPoolTaskExecutor;
