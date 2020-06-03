@@ -19,6 +19,8 @@ public class CheckBusLocationDao {
         try {
             if(rasberryPi.getRouteNum().equals("780-1")){
                 result = ringMyBellMapper.checkBusLocationOf780_1(rasberryPi);
+            }else if (rasberryPi.getRouteNum().equals("908")) {
+                result = ringMyBellMapper.checkBusLocationOf908(rasberryPi);
             }
         } catch (Exception e) {
             e.printStackTrace();
